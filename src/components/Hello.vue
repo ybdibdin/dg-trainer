@@ -8,42 +8,23 @@
     <div id="form">
       <el-form label-width="180px" class="demo-ruleForm">
 
+
+
         <div class="upload">
           <el-form   label-width="180px">
             <el-form-item label="Model" required>
-              <el-upload
-                action="https://jsonplaceholder.typicode.com/posts/"
-                name="Model"
-                :on-success="handlesuccessM"
-             >
-                <el-button size="small" type="primary">Click to upload</el-button>
-              </el-upload>
+              <input type="file"  id="Model"/>
             </el-form-item>
             <el-form-item label="Solver" required>
-              <el-upload
-                action="https://jsonplaceholder.typicode.com/posts/"
-                :on-success="handlesuccessS"
-                >
-                <el-button size="small" type="primary">Click to upload</el-button>
-              </el-upload>
+              <input type="file"  id="Solver"/>
             </el-form-item>
           </el-form>
           <el-form  label-width="180px">
             <el-form-item label="TrainScript" required>
-              <el-upload
-                action="https://jsonplaceholder.typicode.com/posts/"
-                :on-success="handlesuccessT"
-              >
-                <el-button size="small" type="primary">Click to upload</el-button>
-              </el-upload>
+              <input type="file"  id="TrainScript"/>
             </el-form-item>
             <el-form-item label="PythonLayers" required>
-              <el-upload
-                action="https://jsonplaceholder.typicode.com/posts/"
-                :on-success="handlesuccessP"
-              >
-                <el-button size="small" type="primary">Click to upload</el-button>
-              </el-upload>
+              <input type="file"  id="PythonLayers"/>
             </el-form-item>
           </el-form>
         </div>
@@ -80,10 +61,6 @@
             v-model="TestDataUri">
           </el-input>
         </el-form-item>
-
-
-
-
 
 
         <el-form-item class="submitbtn">
@@ -152,10 +129,6 @@
   export default {
     data () {
       return {
-        Modal:{},
-        Solver:{},
-        TrainScript:{},
-        PythonLayers:{},
         Instance1: true,
         Gpus1:true,
         Cpus1:true,
@@ -163,7 +136,7 @@
         Disk256:true,
         activeIndex: '1',
         activeName: 'first',
-        taskid:'',
+        taskid:' ',
         text1:'waiting ...',
         text2:'waiting ...',
         text3:'waiting ...',
@@ -178,15 +151,16 @@
     },
     watch:{
       activeName:function (val, oldval) {
-        if(val == 'second'||this.text2 == 'waiting ...'){
+          console.log(val,oldval);
+        if(val == 'second'&&this.text2 == 'waiting ...'){
             this.second();
-        }else if(val == 'third'||this.text3 == 'waiting ...'){
-            this.third(taskid);
-        }else if(val == 'forth'||this.text4 == 'waiting ...'){
+        }else if(val == 'third'&&this.text3 == 'waiting ...'){
+            this.third();
+        }else if(val == 'forth'&&this.text4 == 'waiting ...'){
           this.forth();
-        }else if(val == 'fifth'||this.text5 == 'waiting ...'){
+        }else if(val == 'fifth'&&this.text5 == 'waiting ...'){
           this.fifth();
-        }else if(val == 'sixth'||this.text6 == 'waiting ...'){
+        }else if(val == 'sixth'&&this.text6 == 'waiting ...'){
           this.sixth();
         }
       }
@@ -214,12 +188,14 @@
         //console.log(this.Modal);
       },
       submit: function () {
-          // console.log(this.Modal)
+//          console.log(document.getElementById('Model').files[0],document.getElementById('TrainScript').files[0],
+ //           document.getElementById('Solver').files[0],document.getElementById('PythonLayers').files[0]);
+                 //console.log(this.text1)
         var form=new FormData();
-        form.append('Modal',this.Modal);
-        form.append('TranScript',this.TrainScript);
-        form.append('Solver',this.Solver);
-        form.append('PythonLayers',this.PythonLayers);
+        form.append('Model',document.getElementById('Model').files[0]);
+        form.append('TranScript',document.getElementById('TrainScript').files[0]);
+        form.append('Solver',document.getElementById('Solver').files[0]);
+        form.append('PythonLayers',document.getElementById('PythonLayers').files[0]);
         form.append('DockerImage',this.DockerImage);
         form.append('TrainDataUri',this.TrainDataUri);
         form.append('TestDataUri',this.TestDataUri);
@@ -229,69 +205,60 @@
         form.append('Mem','16');
         form.append('Disk','256');
         form.append('Instances','1');
+        //console.log(this.DockerImage);
         this.$http({
           url:'http://192.168.6.66:8081/dgtrainer/v1/task',
           method:'post',
           data:form,
-          headers: {'Content-Type': 'multiple/form-data'}
-        }).then((res)=>{console.log(res)})
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).then((res)=>{
+            //console.log(res.request.responseText.split("\"")[3])
+          //console.log(typeof res.request.responseText.split("\""));
+            this.text1=res.request.responseText;
+            this.taskid=res.request.responseText.split("\"")[3];
 
+        })
       },
       second:function () {
         this.$http.get('http://192.168.6.66:8081/dgtrainer/v1/tasks').then(response => {
           // success callback
-          console.log(response)
+          this.text2=response.request.responseText;
         }, response => {
           // error callback
         })
       },
-      third:function (i) {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET','http://192.168.6.66:8081/dgtrainer/v1/task/'+this.taskid+'/logs', true);
-        xhr.onreadystatechange = function() {
-          if (xhr.readyState == 4 && xhr.status == 200) {
-            console.log('success');
-          }
-        }
-        xhr.setRequestHeader("Content-Type", "application/json ;charset=utf-8");
-        xhr.setRequestHeader("Accept", "application/json");
-        xhr.send();
+      third:function () {
+        this.$http.get('http://192.168.6.66:8081/dgtrainer/v1/task/'+this.taskid+'/logs').then(response => {
+          // success callback
+          this.text3=response.request.responseText;
+        }, response => {
+          // error callback
+        })
+
       },
       forth:function () {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET','http://192.168.6.66:8081/dgtrainer/v1/task/'+this.taskid, true);
-        xhr.onreadystatechange = function() {
-          if (xhr.readyState == 4 && xhr.status == 200) {
-            console.log('success');
-          }
-        }
-        xhr.setRequestHeader("Content-Type", "application/json ;charset=utf-8");
-        xhr.setRequestHeader("Accept", "application/json");
-        xhr.send();
+           this.$http.get('http://192.168.6.66:8081/dgtrainer/v1/task/'+this.taskid).then(response => {
+             // success callback
+             this.text4=response.request.responseText;
+           }, response => {
+             // error callback
+           })
       },
       fifth:function () {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET','http://192.168.6.66:8081/dgtrainer/v1/images', true);
-        xhr.onreadystatechange = function() {
-          if (xhr.readyState == 4 && xhr.status == 200) {
-            console.log('success');
-          }
-        }
-        xhr.setRequestHeader("Content-Type", "application/json ;charset=utf-8");
-        xhr.setRequestHeader("Accept", "application/json");
-        xhr.send();
+         this.$http.get('http://192.168.6.66:8081/dgtrainer/v1/images').then(response => {
+           // success callback
+           this.text5=response.request.responseText;
+         }, response => {
+           // error callback
+         })
       },
       sixth:function () {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET','http://192.168.6.66:8081/dgtrainer/v1/resources', true);
-        xhr.onreadystatechange = function() {
-          if (xhr.readyState == 4 && xhr.status == 200) {
-            console.log('success');
-          }
-        }
-        xhr.setRequestHeader("Content-Type", "application/json ;charset=utf-8");
-        xhr.setRequestHeader("Accept", "application/json");
-        xhr.send();
+        this.$http.get('http://192.168.6.66:8081/dgtrainer/v1/resources').then(response => {
+          // success callback
+          this.text6=response.request.responseText;
+        }, response => {
+          // error callback
+          })
       },
       deletetask:function () {
         var xhr = new XMLHttpRequest();
