@@ -1,0 +1,5 @@
+机器学习平台
+前端用vue
+后台用golang
+后台接入marathon和mesos
+实现整个机器学习过程
