@@ -13,19 +13,18 @@
             <el-form-item label="Model" required>
               <el-upload
                 action="https://jsonplaceholder.typicode.com/posts/"
-                :on-success="handlesuccess"
-                :on-remove="handleRemove">
+                name="Model"
+                :on-success="handlesuccessM"
+             >
                 <el-button size="small" type="primary">Click to upload</el-button>
-                <div slot="tip" class="el-upload__tip">u should upload Model  file</div>
               </el-upload>
             </el-form-item>
             <el-form-item label="Solver" required>
               <el-upload
                 action="https://jsonplaceholder.typicode.com/posts/"
-                :on-success="handlesuccess"
-                :on-remove="handleRemove">
+                :on-success="handlesuccessS"
+                >
                 <el-button size="small" type="primary">Click to upload</el-button>
-                <div slot="tip" class="el-upload__tip">u should upload Model      file</div>
               </el-upload>
             </el-form-item>
           </el-form>
@@ -33,19 +32,17 @@
             <el-form-item label="TrainScript" required>
               <el-upload
                 action="https://jsonplaceholder.typicode.com/posts/"
-                :on-success="handlesuccess"
-                :on-remove="handleRemove">
+                :on-success="handlesuccessT"
+              >
                 <el-button size="small" type="primary">Click to upload</el-button>
-                <div slot="tip" class="el-upload__tip">u should upload Model      file</div>
               </el-upload>
             </el-form-item>
             <el-form-item label="PythonLayers" required>
               <el-upload
                 action="https://jsonplaceholder.typicode.com/posts/"
-                :on-success="handlesuccess"
-                :on-remove="handleRemove">
+                :on-success="handlesuccessP"
+              >
                 <el-button size="small" type="primary">Click to upload</el-button>
-                <div slot="tip" class="el-upload__tip">u should upload Model   file</div>
               </el-upload>
             </el-form-item>
           </el-form>
@@ -59,12 +56,12 @@
             v-model="DockerImage">
           </el-input>
         </el-form-item>
-        <el-form-item label="PythonLayer" prop="name" required>
+        <el-form-item label="PretrainedModelUri" prop="name" required>
           <el-input
             type="textarea"
             autosize
             placeholder="Please input"
-            v-model="PythonLayer">
+            v-model="PretrainedModelUri">
           </el-input>
         </el-form-item>
         <el-form-item label="TrainDataUri" prop="name" required>
@@ -101,6 +98,44 @@
         </el-form-item>
       </el-form>
     </div>
+
+
+    <div id="logpanel">
+      <el-tabs v-model="activeName">
+        <el-tab-pane label="task" name="first"><el-input
+          type="textarea"
+          :rows="25"
+          v-model="text1">
+        </el-input></el-tab-pane>
+        <el-tab-pane label="tasks list" name="second"><el-input
+          type="textarea"
+          :rows="25"
+          v-model="text2">
+        </el-input></el-tab-pane>
+        <el-tab-pane label="task log" name="third"><el-input
+          type="textarea"
+          :rows="25"
+          v-model="text3">
+        </el-input></el-tab-pane>
+        <el-tab-pane label="task info" name="fourth"><el-input
+          type="textarea"
+          :rows="25"
+          v-model="text4">
+        </el-input></el-tab-pane>
+        <el-tab-pane label="docker images" name="fifth"><el-input
+          type="textarea"
+          :rows="25"
+          v-model="text5">
+        </el-input></el-tab-pane>
+        <el-tab-pane label="get resources" name="sixth"><el-input
+          type="textarea"
+          :rows="25"
+          v-model="text6">
+        </el-input></el-tab-pane>
+
+      </el-tabs>
+    </div>
+
     </div>
 
 
@@ -114,37 +149,76 @@
   export default {
     data () {
       return {
+        Modal:{},
+        Solver:{},
+        TrainScript:{},
+        PythonLayers:{},
         Instance1: true,
         Gpus1:true,
         Cpus1:true,
         Mem16:true,
         Disk256:true,
         activeIndex: '1',
-        Modal:{},
-        Solver:{},
-        TrainScript:{},
-        PythonLayer:{},
+        activeName: 'first',
+        text1:'waiting ...',
+        text2:'waiting ...',
+        text3:'waiting ...',
+        text4:'waiting ...',
+        text5:'waiting ...',
+        text6:'waiting ...',
         DockerImage: '192.168.2.13:5000/caffe:cuda8v5_belt_2',
         TrainDataUri: 'nfs:///datacenter/image_data/belt/train_data',
         TestDataUri: 'nfs:///datacenter/image_data/belt/val_data',
-        PythonLayer: 'nfs:///datacenter/test_training_platform/belt/bvlc_googlenet_driver_belt__iter_200000.caffemodel',
-        resource: [
-          { required: true, message: 'Please select activity resource', trigger: 'change' }
-        ]
+        PretrainedModelUri: 'nfs:///datacenter/test_training_platform/belt/bvlc_googlenet_driver_belt__iter_200000.caffemodel',
       }
+    },
+    watch:{
+      activeName:function (val, oldval) {
+        if(val == 'second'){
+            this.second();
+        }else if(val == 'third'){
+
+        }
+      }
+
     },
     methods: {
       handleSelect: function (key, keyPath) {
         console.log(key, keyPath)
       },
-      handleRemove: function (file, fileList) {
-        console.log(file, fileList)
-      },
-      handlesuccess: function (response, file, fileList) {
+      handlesuccessM: function (response, file, fileList) {
         this.Modal=file;
         console.log(this.Modal);
+
+      },
+      handlesuccessT: function (response, file, fileList) {
+        this.TrainScript=file;
+        //console.log(this.Modal);
+      },
+      handlesuccessS: function (response, file, fileList) {
+        this.Solver=file;
+        //console.log(this.Modal);
+      },
+      handlesuccessP: function (response, file, fileList) {
+        this.PythonLayers=file;
+        //console.log(this.Modal);
       },
       submit: function () {
+          // console.log(this.Modal)
+        var form=new FormData();
+        form.append('Modal',this.Modal);
+        form.append('TranScript',this.TrainScript);
+        form.append('Solver',this.Solver);
+        form.append('PythonLayers',this.PythonLayers);
+        form.append('DockerImage',this.DockerImage);
+        form.append('TrainDataUri',this.TrainDataUri);
+        form.append('TestDataUri',this.TestDataUri);
+        form.append('PretrainedModelUri',this.PretrainedModelUri);
+        form.append('Gpus',1);
+        form.append('Cpus',1);
+        form.append('Mem',16);
+        form.append('Disk',256);
+        form.append('Instances',1);
         var xhr = new XMLHttpRequest()
         xhr.open('POST','http://192.168.6.66:8081/dgtrainer/v1/task', true)
         xhr.onreadystatechange = function () {
@@ -152,10 +226,20 @@
             alert('success');
           }
         }
-        xhr.setRequestHeader("Content-Type", "application/json ;charset=utf-8")
-        xhr.setRequestHeader("Accept", "application/json")
-        xhr.setRequestHeader("Access-Control-Allow-Origin", "http://localhost")
-        xhr.send()
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
+        xhr.send(form)
+      },
+      second:function () {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET','http://192.168.6.66:8081/dgtrainer/v1/tasks', true);
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState == 4 && xhr.status == 200) {
+            console.log('success');
+          }
+        }
+        xhr.setRequestHeader("Content-Type", "application/json ;charset=utf-8");
+        xhr.setRequestHeader("Accept", "application/json");
+        xhr.send();
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();
@@ -167,6 +251,7 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 #form{
+  float: left;
   width: 45%;
 }
 .checkboxshow{
@@ -180,5 +265,10 @@
   .submitbtn{
     margin-left: 40px;
     margin-top: 30px;
+  }
+  #logpanel{
+    margin-left:50%;
+    margin-top: 20px;
+    width: 48%;
   }
 </style>
