@@ -187,7 +187,10 @@
           this.$http({
             url:'http://192.168.6.66:8081/dgtrainer/v1/task/82e116c1-6632-494c-a007-c40c1d03d4c2',
             method:'get',
-//            headers: {'Content-Type': 'application/json ;charset=utf-8'}
+//            headers: {
+//                'Content-Type': 'application/json ;charset=utf-8',
+//                'Access-Control-Request-Method':'DELETE'
+//            }
           }).then((res)=>{
             //console.log(res.request.responseText.split("\"")[3])
             //console.log(typeof res.request.responseText.split("\""));
@@ -199,16 +202,7 @@
               type: 'info'
             });
          })
-//          $.ajax({
-//            url:'http://192.168.6.66:8081/dgtrainer/v1/task/82e116c1-6632-494c-a007-c40c1d03d4c2',
-//            type:'delete',
-//            success:function (res) {
-//              console.log(res)
-//            },
-//            error:function (err) {
-//              console.log(err)
-//            }
-//          })
+
        }
     }
   }
