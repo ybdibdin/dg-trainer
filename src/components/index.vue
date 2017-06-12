@@ -1,12 +1,6 @@
 <template>
   <div>
-    <div class="nav">
-      <el-menu theme="light" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-        <router-link to="/"><el-menu-item index="1">Processing Center</el-menu-item></router-link>
-        <router-link to="/create"><el-menu-item index="3">create new task</el-menu-item></router-link>
-        <el-menu-item index="2" style="float: right"><a href="http://www.deepglint.com" target="_blank">Contact us</a></el-menu-item>
-      </el-menu>
-    </div>
+
 
     <div class="main-show">
         <div class="resource" >
@@ -119,7 +113,6 @@
   export default {
     data () {
       return {
-        activeIndex: '1',
         tableData: [],
         tableData1: []
       }
@@ -147,7 +140,7 @@
       })
       //get tasklist
       this.$http.get('http://192.168.6.66:8081/dgtrainer/v1/tasks').then(response => {
-          console.log(response)
+         console.log(response)
           for(var x in response.data){
               if(response.data[x]){
                   //console.log(response.data[x].name);
@@ -155,8 +148,8 @@
                       name:response.data[x].name,
                       cmd:response.data[x].cmd,
                       WaitingTime:response.data[x].WaitingTime,
-                      depenency_uris:JSON.stringify(response.data[x].depenency_uris),
-                      dockerimage:response.data[x].dockerimage,
+                      dependency_uris:JSON.stringify(response.data[x].dependency_uris),
+                      docker_image:response.data[x].docker_image,
                       instances:response.data[x].instances,
                       resources:JSON.stringify(response.data[x].resources),
                       state:response.data[x].state,
@@ -164,6 +157,23 @@
                   }
                 this.tableData1.push(temp);
               }
+              this.tableData1.sort(function (x,y) {
+                  var arr=[x,y];
+                  arr.forEach(function (element,index,self) {
+                    if(element.state =='TASK_FINISHED'){
+                      self[index]=10;
+                    }else if(element.state == 'TASK_FAILED'){
+                      self[index]=-10;
+                    }else if(element.state == 'TASK_RUNNING'){
+                      self[index]=100;
+                    }else if(element.state == 'TASK_KILLED'){
+                      self[index]=0;
+                    }
+                  })
+                console.log(arr);
+                  return arr[1]-arr[0];
+
+              })
         }
 
         }, response => {
@@ -178,14 +188,11 @@
       }
     },
       methods: {
-        handleSelect: function (key, keyPath) {
-          //console.log(key, keyPath)
-        },
         handleDelete:function (index, row) {
             this.tableData1.splice(index, 1);
           console.log(this.tableData1[index].name);
           this.$http({
-            url:'http://192.168.6.66:8081/dgtrainer/v1/task/82e116c1-6632-494c-a007-c40c1d03d4c2',
+            url:'http://192.168.6.66:8081/dgtrainer/v1/task/'+this.tableData1[index].name,
             method:'get',
 //            headers: {
 //                'Content-Type': 'application/json ;charset=utf-8',
