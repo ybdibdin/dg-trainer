@@ -8,6 +8,7 @@
     </el-menu>
   </div>
     <router-view></router-view>
+
   </div>
 </template>
 
@@ -17,8 +18,10 @@ export default {
   data () {
     return {
       activeIndex: '1',
+      msg:'124'
     }
   },
+
   method:{
 
   }
@@ -31,4 +34,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+  .nav{
+
+  }
 </style>
