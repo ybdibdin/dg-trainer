@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="width: 100%;height: 100%;overflow: scroll">
 
     <div class="main-show">
       <div id="charts">
@@ -163,10 +163,6 @@ var echarts = require('echarts');
 
         var myChart = echarts.init(document.getElementById('main'));
         myChart.setOption({
-//          title:{
-//              text:'resource state',
-//              padding:[0,0,0,0]
-//          },
           tooltip : {
             trigger: 'axis',
             axisPointer : {            // 坐标轴指示器，坐标轴触发有效

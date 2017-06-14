@@ -1,18 +1,16 @@
 <template>
-  <div>
-  <div class="nav">
-    <el-menu theme="light" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" >
-      <router-link to="/"><el-menu-item index="1">Processing Center</el-menu-item></router-link>
-      <router-link to="/create"><el-menu-item index="3">create new task</el-menu-item></router-link>
-      <el-menu-item index="2" style="float: right"><a href="http://www.deepglint.com" target="_blank">Contact us</a></el-menu-item>
-    </el-menu>
-  </div>
-    <router-view></router-view>
-
+  <div style="height: 100%;width: 100%; background-color: #1F2D3D;">
+    <Top-nav class="nav"></Top-nav>
+    <div style="height: 90vh;width:100%;overflow: scroll">
+      <Left-panel class="leftpanel"></Left-panel>
+      <router-view class="panel"></router-view>
+    </div>
   </div>
 </template>
 
 <script>
+  import TopNav from './components/nav.vue';
+  import LeftPanel from './components/leftpanel.vue';
 export default {
   name: 'app',
   data () {
@@ -24,7 +22,12 @@ export default {
 
   method:{
 
+  },
+  components:{
+      TopNav,
+    LeftPanel
   }
+
 }
 </script>
 
@@ -35,6 +38,19 @@ export default {
   -moz-osx-font-smoothing: grayscale;
 }
   .nav{
+    height: 10vh;
+  }
+  .leftpanel{
+    width: 20vw;
+    float: left;
+    height: 100%;
 
+  }
+  .panel{
+    margin-left: 21vw;
+    width: 78vw;
+    height: 100%;
+    overflow: hidden;
+    background-color: #324057;
   }
 </style>

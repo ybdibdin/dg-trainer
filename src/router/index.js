@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import index from '@/components/index'
 import create from '@/components/create'
 import detail from '@/components/detail'
+import panel from '@/components/panel'
 
 Vue.use(Router)
 
@@ -10,8 +11,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'index',
-      component: index
+      name: 'panel',
+      component: panel
     },{
       path:'/create',
       name:'create',
