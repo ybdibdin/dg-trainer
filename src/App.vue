@@ -11,12 +11,12 @@
 <script>
   import TopNav from './components/nav.vue';
   import LeftPanel from './components/leftpanel.vue';
+  import { mapState } from 'vuex'
 export default {
   name: 'app',
   data () {
     return {
       activeIndex: '1',
-      msg:'124'
     }
   },
 
