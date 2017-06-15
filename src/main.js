@@ -6,12 +6,13 @@ import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 import axios from 'axios'
-import echarts from "echarts"
+import vuex from 'vuex'
 
 
 Vue.prototype.$http = axios
 
 Vue.use(ElementUI)
+Vue.use(vuex)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
