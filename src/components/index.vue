@@ -47,7 +47,8 @@
             </el-table-column>
           </el-table>
         </div>
-        <div class="list">
+
+      <div class="list">
           <el-table
           :data="tableData1"
           style="width: 100%"

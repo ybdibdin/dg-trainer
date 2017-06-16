@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 100%;width: 100%; background-color: #1F2D3D;">
+  <div style="height: 100%;width: 100%">
     <Top-nav class="nav"></Top-nav>
     <div style="height: 90vh;width:100%;overflow: scroll">
       <Left-panel class="leftpanel"></Left-panel>
@@ -41,16 +41,15 @@ export default {
     height: 10vh;
   }
   .leftpanel{
-    width: 20vw;
+    width: 16vw;
     float: left;
     height: 100%;
 
   }
   .panel{
-    margin-left: 21vw;
-    width: 78vw;
+    margin-left: 17vw;
+    width: 82vw;
     height: 100%;
-    overflow: hidden;
-    background-color: #324057;
+    overflow: auto;
   }
 </style>
