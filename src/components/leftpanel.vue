@@ -1,7 +1,7 @@
 <template>
   <div>
 
-      <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" theme="dark" style="height: 100%">
+      <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" theme="light" style="height: 100%">
         <router-link to="/createtask"><el-menu-item index="5">Create New Task</el-menu-item></router-link>
         <router-link to="/"><el-menu-item index="4">Index</el-menu-item></router-link>
         <el-submenu index="1">

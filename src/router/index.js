@@ -8,6 +8,7 @@ import createtask from '@/components/createtask'
 import resourcelist from '@/components/resourcelist'
 import tasklist from '@/components/tasklist'
 import image from '@/components/image'
+import detail from '@/components/detail'
 
 Vue.use(Router)
 
@@ -33,6 +34,10 @@ export default new Router({
       path:'/image',
       name:'image',
       component:image
+    },{
+      path:'/detail/:index',
+      name:'detail',
+      component:detail
     }
 
   ]
