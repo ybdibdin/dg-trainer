@@ -3,6 +3,7 @@ const actions={
   getAllData:async ({commit},that) =>{
     let resourcelist=[];
     let tasklist=[];
+    let sum=[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
     await that.$http.get('http://192.168.6.66:8081/dgtrainer/v1/resources').then(response => {
       // success callback
       console.log(response);
@@ -13,11 +14,27 @@ const actions={
         var objtemp={
           id:response.data.slaves[i].id,
           hostname:response.data.slaves[i].hostname,
-          resource:JSON.stringify(response.data.slaves[i].resources),
+          resource:response.data.slaves[i].resources,
           offeredR:response.data.slaves[i].offered_resources,
           unreservedR:response.data.slaves[i].unreserved_resources,
           usedR:response.data.slaves[i].used_resources
         }
+        sum[0][0]=response.data.slaves[i].resources.cpus;
+        sum[0][1]+=response.data.slaves[i].offered_resources.cpus;
+        sum[0][2]+=parseInt(response.data.slaves[i].unreserved_resources.cpus);
+        sum[0][3]+=parseInt(response.data.slaves[i].used_resources.cpus);
+        sum[1][0]+=Number(response.data.slaves[i].resources.gpus);
+        sum[1][1]+=Number(response.data.slaves[i].offered_resources.gpus);
+        sum[1][2]+=Number(response.data.slaves[i].unreserved_resources.gpus);
+        sum[1][3]+=Number(response.data.slaves[i].used_resources.gpus);
+        sum[2][0]+=Number(response.data.slaves[i].resources.mem);
+        sum[2][1]+=Number(response.data.slaves[i].offered_resources.mem);
+        sum[2][2]+=Number(response.data.slaves[i].unreserved_resources.mem);
+        sum[2][3]+=Number(response.data.slaves[i].used_resources.mem);
+        sum[3][0]+=Number(response.data.slaves[i].resources.disk);
+        sum[3][1]+=Number(response.data.slaves[i].offered_resources.disk);
+        sum[3][2]+=Number(response.data.slaves[i].unreserved_resources.disk);
+        sum[3][3]+=Number(response.data.slaves[i].used_resources.disk);
         resourcelist.push(objtemp);
       }
 
@@ -36,7 +53,7 @@ const actions={
             dependency_uris:JSON.stringify(response.data[x].dependency_uris),
             docker_image:response.data[x].docker_image,
             instances:response.data[x].instances,
-            resources:JSON.stringify(response.data[x].resources),
+            resources:response.data[x].resources,
             state:response.data[x].state,
             state_message:response.data[x].state_message,
             tag:response.data[x].state
@@ -75,7 +92,7 @@ const actions={
       // error callback
     })
 
-    commit('getData',{resourcelist,tasklist})
+    commit('getData',{resourcelist,tasklist,sum})
   }
 
 }

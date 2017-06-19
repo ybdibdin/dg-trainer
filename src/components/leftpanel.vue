@@ -14,7 +14,6 @@
         </el-submenu>
         <router-link to="/tasklist"><el-menu-item index="2">Task List</el-menu-item></router-link>
         <router-link to="/image"><el-menu-item index="3">Image</el-menu-item></router-link>
-        <router-link to="/detail"><el-menu-item index="6">Detail</el-menu-item></router-link>
       </el-menu>
 
   </div>

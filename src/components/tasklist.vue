@@ -8,7 +8,7 @@
             <span style="margin-left: 10px">{{ scope.row.date }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="姓名" width="300">
+        <el-table-column label="taskid" width="300">
           <template scope="scope">
             <el-popover trigger="hover" placement="top">
               <p>docker_image: {{ scope.row.docker_image }}</p>
@@ -26,7 +26,7 @@
         </el-table-column>
         <el-table-column label="操作">
           <template scope="scope">
-            <router-link to="/detail"><el-button size="small" @click="handleEnter(scope.$index, scope.row)">Details</el-button></router-link>
+            <router-link v-bind:to="'/detail/'+scope.$index"><el-button size="small" @click="handleEnter(scope.$index, scope.row)">Details</el-button></router-link>
             <el-button size="small" type="info" @click="handleEdit(scope.$index, scope.row)">stop</el-button>
             <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">delete</el-button>
           </template>
@@ -79,10 +79,11 @@
 
       },
       handleEdit(index, row) {
-        console.log(index, row);
+        //console.log(index, row);
       },
       handleEnter(index, row){
-          console.log(index)
+        //router.push({ name: 'detail', params: { index: index }})
+         // console.log(index)
       }
     },
     computed:{
