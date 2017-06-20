@@ -15,4 +15,8 @@ echart进行数据可视化。样式ui使用的element ui
 
 #### 如何跑起来
 
+<<<<<<< HEAD
 npm run dev
+=======
+npm run dev
+>>>>>>> 5d399566e7414dac036c8990f3da7892e875a758
