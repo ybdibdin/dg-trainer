@@ -1,10 +1,7 @@
 <template>
   <div>
 
-
-
-
-  <div id="form">
+  <div id="form" style="width: 60vw;margin:0 auto">
     <el-form label-width="180px" class="demo-ruleForm">
 
 
@@ -72,6 +69,7 @@
 
 
 <script>
+  import { mapState, mapMutations } from 'vuex'
   export default {
     data () {
       return {
@@ -82,6 +80,13 @@
         TestDataUri: 'nfs:///datacenter/image_data/belt/val_data',
         PretrainedModelUri: 'nfs:///datacenter/test_training_platform/belt/bvlc_googlenet_driver_belt__iter_200000.caffemodel',
       }
+    },
+    computed:{
+
+      ...mapState({
+        docker:state=>state.data.docker,
+        dockertag:state=>state.data.dockertag
+      })
     },
     methods:{
       submit: function () {

@@ -7,7 +7,13 @@ import actions from './actions'
 Vue.use(Vuex)
 
 let state={
-  data:{resourcelist:[],tasklist:[]}
+  data:{
+    resourcelist:[],
+    tasklist:[],
+    sum:[],
+    docker:[],
+    dockertag:[]
+  }
 
 }
 

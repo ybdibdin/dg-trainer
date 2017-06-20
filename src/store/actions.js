@@ -4,6 +4,8 @@ const actions={
     let resourcelist=[];
     let tasklist=[];
     let sum=[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
+    let docker=[];
+    let dockertag=[];
     await that.$http.get('http://192.168.6.66:8081/dgtrainer/v1/resources').then(response => {
       // success callback
       console.log(response);
@@ -92,7 +94,27 @@ const actions={
       // error callback
     })
 
-    commit('getData',{resourcelist,tasklist,sum})
+    await that.$http.get('http://192.168.6.66:8081/dgtrainer/v1/images').then(response => {
+      // success callback
+      //console.log('docker',response.data);
+      docker=response.data;
+
+    }, response => {
+      // error callback
+    })
+
+    await that.$http.get('http://192.168.6.66:8081/dgtrainer/v1/image/caffe/tags').then(response => {
+      // success callback
+      //console.log('docker',response.data);
+      dockertag=response.data;
+
+    }, response => {
+      // error callback
+    })
+
+    commit('getData',{resourcelist,tasklist,sum,docker,dockertag})
+
+
   }
 
 }

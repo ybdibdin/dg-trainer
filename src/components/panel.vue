@@ -1,12 +1,16 @@
 <template>
   <div>
 
-      <el-carousel :interval="4000" type="card" height="80vh">
-        <el-carousel-item v-for="item in 4" :key="item">
-          <h3>{{ item }}</h3>
-        </el-carousel-item>
-      </el-carousel>
-    <div id="main" style="width: 600px;height:400px;"></div>
+
+    <el-carousel height="640px" >
+
+      <el-carousel-item v-for="item in this.showid" :key="item">
+        <div v-bind:id="item" style="width: 700px;height:550px;margin-left: 150px;"></div>
+      </el-carousel-item>
+    </el-carousel>
+
+
+
 
   </div>
 </template>
@@ -14,78 +18,244 @@
 
 <script>
   var echarts = require('echarts');
-  import { mapState, mapMutations } from 'vuex'
+  import { mapState} from 'vuex'
   export default {
     data () {
       return {
-
+        showid:['main','sec','third','forth']
       }
     },
-    methods:{
-     init() {
-    var myChart = echarts.init(document.getElementById('main'));
-    console.log(this.$store.state.data)
-    // 指定图表的配置项和数据
-    var option = {
-      title : {
-        text: 'resource',
-        subtext: 'cpus',
-        x:'center'
-      },
-      tooltip : {
-        trigger: 'item',
-        formatter: "{a} <br/>{b} : {c} ({d}%)"
-      },
-      legend: {
-        x : 'center',
-        y : 'bottom',
-        data:['resource cpu','offered cpu','unreserved cpu','used cpu']
-      },
-      toolbox: {
-        show : true,
-        feature : {
-          mark : {show: true},
-          dataView : {show: true, readOnly: false},
-          magicType : {
-            show: true,
-            type: ['pie', 'funnel']
-          },
-          restore : {show: true},
-          saveAsImage : {show: true}
-        }
-      },
-      calculable : true,
-      series : [
-        {
-          name:'面积模式',
-          type:'pie',
-          radius : [30, 110],
-          center : ['75%', '50%'],
-          data:[
-            {value:this.sum[0][0], name:'resource cpu'},
-            {value:34, name:'offered cpu'},
-            {value:39, name:'unreserved cpu'},
-            {value:12, name:'used cpu'},
-          ]
-        }
-      ]
-    };
-
-
-       // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
-  }
-    },
     computed:{
-      ...mapState({
-        tableData:state=>state.data.resourcelist,
-        sum:state=>state.data.sum
-      }),
-
+      sum() {
+          //console.log('data!!!',this.$store.state.data)
+        return this.$store.state.data.sum
+      }
+//        mapState({
+//        tableData:state=>state.data.resourcelist,
+//        sum:state=>state.data.sum
+//      })
     },
-    mounted(){
-      this.init()
-    }
+
+    mounted() {
+
+        var myChart = echarts.init(document.getElementById('main'));
+        if (this.sum.length) {
+          //指定图表的配置项和数据
+          var option = {
+            title: {
+              text: 'resource  cpus',
+              subtext: 'cpus',
+              x: 'center'
+            },
+            tooltip: {
+              trigger: 'item',
+              formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+              x: 'center',
+              y: 'bottom',
+              data: ['resource cpu', 'offered cpu', 'unreserved cpu', 'used cpu']
+            },
+            toolbox: {
+              show: true,
+              feature: {
+                mark: {show: true},
+                dataView: {show: true, readOnly: false},
+                magicType: {
+                  show: true,
+                  type: ['pie', 'funnel']
+                },
+                restore: {show: true},
+                saveAsImage: {show: true}
+              }
+            },
+            calculable: true,
+            series: [
+              {
+
+                name: '面积模式',
+                type: 'pie',
+                radius: [30, 110],
+                center: ['55%', '50%'],
+                data: [
+                  {value: this.sum[0][0], name: 'resource cpu'},
+                  {value: this.sum[0][1], name: 'offered cpu'},
+                  {value: this.sum[0][2], name: 'unreserved cpu'},
+                  {value: this.sum[0][3], name: 'used cpu'},
+                ]
+              }
+            ]
+          };
+
+          // 使用刚指定的配置项和数据显示图表。
+          myChart.setOption(option,true);
+
+        }
+
+
+
+        var myChart2 = echarts.init(document.getElementById('sec'));
+        if (this.sum.length) {
+          //指定图表的配置项和数据
+          var option2 = {
+            title: {
+              text: 'resource gpus',
+              subtext: 'gpus',
+              x: 'center'
+            },
+            tooltip: {
+              trigger: 'item',
+              formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+              x: 'right',
+              y: 'bottom',
+              data: ['resource gpu', 'offered gpu', 'unreserved gpu', 'used gpu']
+            },
+            toolbox: {
+              show: true,
+              feature: {
+                mark: {show: true},
+                dataView: {show: true, readOnly: false},
+                magicType: {
+                  show: true,
+                  type: ['pie', 'funnel']
+                },
+                restore: {show: true},
+                saveAsImage: {show: true}
+              }
+            },
+            calculable: true,
+            series: [
+              {
+                name: '面积模式',
+                type: 'pie',
+                radius: [30, 110],
+                center: ['55%', '50%'],
+                data: [
+                  {value: this.sum[1][0], name: 'resource gpu'},
+                  {value: this.sum[1][1], name: 'offered gpu'},
+                  {value: this.sum[1][2], name: 'unreserved gpu'},
+                  {value: this.sum[1][3], name: 'used gpu'},
+                ]
+              }
+            ]
+          };
+
+          // 使用刚指定的配置项和数据显示图表。
+          myChart2.setOption(option2,true);
+
+        }
+
+      var myChart3 = echarts.init(document.getElementById('third'));
+      if (this.sum.length) {
+        //指定图表的配置项和数据
+        var option3 = {
+          title: {
+            text: 'resource mem',
+            subtext: 'mem',
+            x: 'center'
+          },
+          tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+          },
+          legend: {
+            x: 'center',
+            y: 'bottom',
+            data: ['resource mem', 'offered mem', 'unreserved mem', 'used mem']
+          },
+          toolbox: {
+            show: true,
+            feature: {
+              mark: {show: true},
+              dataView: {show: true, readOnly: false},
+              magicType: {
+                show: true,
+                type: ['pie', 'funnel']
+              },
+              restore: {show: true},
+              saveAsImage: {show: true}
+            }
+          },
+          calculable: true,
+          series: [
+            {
+              name: '面积模式',
+              type: 'pie',
+              radius: [30, 110],
+              center: ['55%', '50%'],
+              data: [
+                {value: this.sum[2][0], name: 'resource mem'},
+                {value: this.sum[2][1], name: 'offered mem'},
+                {value: this.sum[2][2], name: 'unreserved mem'},
+                {value: this.sum[2][3], name: 'used mem'},
+              ]
+            }
+          ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart3.setOption(option3,true);
+
+      }
+
+
+      var myChart4 = echarts.init(document.getElementById('forth'));
+      if (this.sum.length) {
+        //指定图表的配置项和数据
+        var option4 = {
+          title: {
+            text: 'resource disk',
+            subtext: 'disk',
+            x: 'center'
+          },
+          tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+          },
+          legend: {
+            x: 'center',
+            y: 'bottom',
+            data: ['resource disk', 'offered disk', 'unreserved disk', 'used disk']
+          },
+          toolbox: {
+            show: true,
+            feature: {
+              mark: {show: true},
+              dataView: {show: true, readOnly: false},
+              magicType: {
+                show: true,
+                type: ['pie', 'funnel']
+              },
+              restore: {show: true},
+              saveAsImage: {show: true}
+            }
+          },
+          calculable: true,
+          series: [
+            {
+              name: '面积模式',
+              type: 'pie',
+              radius: [30, 110],
+              center: ['55%', '50%'],
+              data: [
+                {value: this.sum[3][0], name: 'resource disk'},
+                {value: this.sum[3][1], name: 'offered disk'},
+                {value: this.sum[3][2], name: 'unreserved disk'},
+                {value: this.sum[3][3], name: 'used disk'},
+              ]
+            }
+          ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart4.setOption(option4,true);
+
+      }
+      }
+
+
 
   }
 

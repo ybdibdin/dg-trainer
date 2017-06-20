@@ -3,25 +3,26 @@ import Router from 'vue-router'
 import ctask from '@/components/createtask'
 //import create from '@/components/create'
 //import detail from '@/components/detail'
-import index from '@/components/panel'
-import createtask from '@/components/createtask'
+import chart from '@/components/panel'
+import create from '@/components/create'
 import resourcelist from '@/components/resourcelist'
 import tasklist from '@/components/tasklist'
 import image from '@/components/image'
 import detail from '@/components/detail'
+
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/',
-      name: 'index',
-      component: index
+      path: '/chart',
+      name: 'chart',
+      component: chart
     },{
-      path:'/createtask',
-      name:'createtask',
-      component:createtask
+      path:'/',
+      name:'create',
+      component:create
     },{
       path:'/resourcelist',
       name:'resourcelist',
