@@ -90,7 +90,13 @@
       ...mapState({
         tableData:state=>state.data.tasklist
       })
-    }
+    },
+    created:()=> {
+      setInterval(function () {
+        console.log('testtest');
+
+      },5000)
+    },
   }
 
 

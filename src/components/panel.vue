@@ -2,12 +2,11 @@
   <div>
 
 
-    <el-carousel height="640px" >
 
-      <el-carousel-item v-for="item in this.showid" :key="item">
-        <div v-bind:id="item" style="width: 700px;height:550px;margin-left: 150px;"></div>
-      </el-carousel-item>
-    </el-carousel>
+      <div v-for="item in this.showid" :key="item" >
+        <div v-bind:id="item" style="width: 450px;height:450px;float: left"></div>
+      </div>
+
 
 
 
@@ -54,7 +53,7 @@
             legend: {
               x: 'center',
               y: 'bottom',
-              data: ['resource cpu', 'offered cpu', 'unreserved cpu', 'used cpu']
+              //data: ['resource cpu', 'offered cpu', 'unreserved cpu', 'used cpu']
             },
             toolbox: {
               show: true,
@@ -75,12 +74,10 @@
 
                 name: '面积模式',
                 type: 'pie',
-                radius: [30, 110],
+                radius: [20, 80],
                 center: ['55%', '50%'],
                 data: [
-                  {value: this.sum[0][0], name: 'resource cpu'},
-                  {value: this.sum[0][1], name: 'offered cpu'},
-                  {value: this.sum[0][2], name: 'unreserved cpu'},
+                  {value: this.sum[0][2], name: 'unused cpu'},
                   {value: this.sum[0][3], name: 'used cpu'},
                 ]
               }
@@ -110,7 +107,7 @@
             legend: {
               x: 'right',
               y: 'bottom',
-              data: ['resource gpu', 'offered gpu', 'unreserved gpu', 'used gpu']
+              //data: ['resource gpu', 'offered gpu', 'unreserved gpu', 'used gpu']
             },
             toolbox: {
               show: true,
@@ -130,12 +127,10 @@
               {
                 name: '面积模式',
                 type: 'pie',
-                radius: [30, 110],
+                radius: [20, 80],
                 center: ['55%', '50%'],
                 data: [
-                  {value: this.sum[1][0], name: 'resource gpu'},
-                  {value: this.sum[1][1], name: 'offered gpu'},
-                  {value: this.sum[1][2], name: 'unreserved gpu'},
+                  {value: this.sum[1][2], name: 'unused gpu'},
                   {value: this.sum[1][3], name: 'used gpu'},
                 ]
               }
@@ -163,7 +158,7 @@
           legend: {
             x: 'center',
             y: 'bottom',
-            data: ['resource mem', 'offered mem', 'unreserved mem', 'used mem']
+            //data: ['resource mem', 'offered mem', 'unreserved mem', 'used mem']
           },
           toolbox: {
             show: true,
@@ -183,12 +178,12 @@
             {
               name: '面积模式',
               type: 'pie',
-              radius: [30, 110],
+              radius: [20, 80],
               center: ['55%', '50%'],
               data: [
-                {value: this.sum[2][0], name: 'resource mem'},
-                {value: this.sum[2][1], name: 'offered mem'},
-                {value: this.sum[2][2], name: 'unreserved mem'},
+                {value: this.sum[2][2], name: 'unused mem'},
+//                {value: this.sum[2][1], name: 'offered mem'},
+//                {value: this.sum[2][2], name: 'unreserved mem'},
                 {value: this.sum[2][3], name: 'used mem'},
               ]
             }
@@ -217,7 +212,7 @@
           legend: {
             x: 'center',
             y: 'bottom',
-            data: ['resource disk', 'offered disk', 'unreserved disk', 'used disk']
+            //data: ['resource disk', 'offered disk', 'unreserved disk', 'used disk']
           },
           toolbox: {
             show: true,
@@ -237,12 +232,10 @@
             {
               name: '面积模式',
               type: 'pie',
-              radius: [30, 110],
+              radius: [20, 80],
               center: ['55%', '50%'],
               data: [
-                {value: this.sum[3][0], name: 'resource disk'},
-                {value: this.sum[3][1], name: 'offered disk'},
-                {value: this.sum[3][2], name: 'unreserved disk'},
+                {value: this.sum[3][2], name: 'unused disk'},
                 {value: this.sum[3][3], name: 'used disk'},
               ]
             }

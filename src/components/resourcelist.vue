@@ -123,6 +123,12 @@
     methods:{
 
     },
+    created:()=> {
+          setInterval(function () {
+            console.log('testtest');
+        this.dispatch('getAllData',this)
+          },5000)
+    },
     computed:{
       ...mapState({
         tableData:state=>state.data.resourcelist

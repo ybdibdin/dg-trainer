@@ -66,9 +66,12 @@
         showtask:state=>state.data.tasklist
       })
     },
-    created: {
+    created:()=> {
+      setInterval(function () {
+        console.log('testtest');
 
-    }
+      },5000)
+    },
   }
 
 

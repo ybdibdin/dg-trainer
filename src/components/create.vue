@@ -1,7 +1,7 @@
 <template>
   <div>
 
-  <div id="form" style="width: 60vw;margin:0 auto">
+  <div id="form" style="width: 60vw">
     <el-form label-width="180px" class="demo-ruleForm">
 
 
@@ -10,14 +10,47 @@
         <el-form   label-width="180px">
           <el-form-item label="Model" required>
             <input type="file"  id="Model"/>
+            <el-button type="primary" size="mini" v-on:click="dialogModel = true" value="Model">我要自己写</el-button>
+            <el-dialog title="Model" :visible.sync="dialogModel">
+              <el-input
+                type="textarea"
+                :autosize="{ minRows: 18, maxRows: 20}"
+                placeholder="请输入内容请问"
+                v-model="textarea">
+              </el-input>
+              <el-button @click="dialogModel = false" size="small">Cancel</el-button>
+              <el-button type="primary" size="small" v-on:click="writeModel" value="Model">Submit</el-button>
+            </el-dialog>
           </el-form-item>
           <el-form-item label="Solver" required>
             <input type="file"  id="Solver"/>
+            <el-button type="primary" size="mini" v-on:click="dialogSolver = true" value="Solver">我要自己写</el-button>
+            <el-dialog title="Solver" :visible.sync="dialogSolver">
+              <el-input
+                type="textarea"
+                :autosize="{ minRows: 18, maxRows: 20}"
+                placeholder="请输入内容请问"
+                v-model="textarea1">
+              </el-input>
+              <el-button @click="dialogSolver = false" size="small">Cancel</el-button>
+              <el-button type="primary" size="small" v-on:click="writeSolver" >Submit</el-button>
+            </el-dialog>
           </el-form-item>
         </el-form>
         <el-form  label-width="180px">
           <el-form-item label="TrainScript" required>
             <input type="file"  id="TrainScript"/>
+            <el-button type="primary" size="mini" v-on:click="dialogScript=true" value="TranScript">我要自己写</el-button>
+            <el-dialog title="TrainScript" :visible.sync="dialogScript">
+              <el-input
+                type="textarea"
+                :autosize="{ minRows: 18, maxRows: 20}"
+                placeholder="请输入内容请问"
+                v-model="textarea2">
+              </el-input>
+              <el-button @click="dialogScript = false" size="small">Cancel</el-button>
+              <el-button type="primary" size="small" v-on:click="writeScript">Submit</el-button>
+            </el-dialog>
           </el-form-item>
           <el-form-item label="PythonLayers" required>
             <input type="file"  id="PythonLayers"/>
@@ -25,7 +58,7 @@
         </el-form>
       </div>
 
-      <el-form-item label="DockerImage" prop="name"  required>
+      <el-form-item style="display: inline-block;width: 70%;" label="DockerImage" prop="name"  required>
         <el-input
           type="textarea"
           autosize
@@ -33,6 +66,29 @@
           v-model="DockerImage">
         </el-input>
       </el-form-item>
+      <el-dropdown style="display: inline-block"  @command="handleCommand">
+      <span class="el-dropdown-link">
+        docker<i class="el-icon-caret-bottom el-icon--right"></i>
+      </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item command="0">{{docker[0]}}</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+      <el-dropdown style="display: inline-block"  @command="handletag">
+        <span class="el-dropdown-link">
+          dockertag<i class="el-icon-caret-bottom el-icon--right"></i>
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item command="0">{{dockertag[0]}}</el-dropdown-item>
+          <el-dropdown-item command="1">{{dockertag[1]}}</el-dropdown-item>
+          <el-dropdown-item command="2">{{dockertag[2]}}</el-dropdown-item>
+          <el-dropdown-item command="3">{{dockertag[3]}}</el-dropdown-item>
+          <el-dropdown-item command="4">{{dockertag[4]}}</el-dropdown-item>
+          <el-dropdown-item command="5" divided><router-link to="/image">create new image</router-link></el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+
+
       <el-form-item label="PretrainedModelUri" prop="name" required>
         <el-input
           type="textarea"
@@ -59,6 +115,7 @@
       </el-form-item>
 
 
+
       <el-form-item class="submitbtn">
         <el-button type="primary" @click="submit">Create</el-button>
       </el-form-item>
@@ -70,6 +127,7 @@
 
 <script>
   import { mapState, mapMutations } from 'vuex'
+  import router from 'vue-router'
   export default {
     data () {
       return {
@@ -79,6 +137,13 @@
         TrainDataUri: 'nfs:///datacenter/image_data/belt/train_data',
         TestDataUri: 'nfs:///datacenter/image_data/belt/val_data',
         PretrainedModelUri: 'nfs:///datacenter/test_training_platform/belt/bvlc_googlenet_driver_belt__iter_200000.caffemodel',
+        dialogModel:false,
+        dialogSolver:false,
+        dialogScript:false,
+        textarea:"",
+        textarea1:"",
+        textarea2:"",
+
       }
     },
     computed:{
@@ -89,6 +154,29 @@
       })
     },
     methods:{
+      handleCommand(command) {
+
+      },
+      writeModel(){
+          this.dialogModel = false;
+
+      },
+      writeSolver(){
+          this.dialogSolver=false;
+      },
+      writeScript(){
+          this.dialogScript=false;
+
+      },
+      handletag(command) {
+          if(command == 5){
+
+          }else {
+            var temp = this.DockerImage.split(':');
+            temp[2] = this.dockertag[command];
+            this.DockerImage = temp[0] + ':' + temp[1] + ':' + temp[2];
+          }
+      },
       submit: function () {
 //          console.log(document.getElementById('Model').files[0],document.getElementById('TrainScript').files[0],
         //           document.getElementById('Solver').files[0],document.getElementById('PythonLayers').files[0]);
