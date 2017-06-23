@@ -25,5 +25,12 @@ new Vue({
   components: { App },
   beforeCreate() {
     this.$store.dispatch('getAllData', this)
-  }
+  },
+  created(){
+    var that=this;
+    setInterval(function () {
+      //console.log('that',that.$store);
+      that.$store.dispatch('getAllData', that)
+    },5000)
+}
 })

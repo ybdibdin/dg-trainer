@@ -84,19 +84,23 @@
       handleEnter(index, row){
         //router.push({ name: 'detail', params: { index: index }})
          // console.log(index)
+        var that=this;
+        setInterval(function () {
+            //console.log(that,index);
+
+          //chart放在interval里，detail就request一次
+          that.$store.dispatch('getTaskList',{
+              that:that,
+            id:that.tableData[index].name
+          })
+        },5000)
       }
     },
     computed:{
       ...mapState({
         tableData:state=>state.data.tasklist
       })
-    },
-    created:()=> {
-      setInterval(function () {
-        console.log('testtest');
-
-      },5000)
-    },
+    }
   }
 
 

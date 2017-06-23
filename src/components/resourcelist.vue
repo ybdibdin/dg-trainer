@@ -113,7 +113,7 @@
 
 
 <script>
-  import { mapState, mapMutations } from 'vuex'
+  import { mapState, mapMutations} from 'vuex'
   export default {
     data () {
       return {
@@ -122,12 +122,6 @@
     },
     methods:{
 
-    },
-    created:()=> {
-          setInterval(function () {
-            console.log('testtest');
-        this.dispatch('getAllData',this)
-          },5000)
     },
     computed:{
       ...mapState({

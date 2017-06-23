@@ -58,6 +58,8 @@
         </el-form>
       </div>
 
+
+
       <el-form-item style="display: inline-block;width: 70%;" label="DockerImage" prop="name"  required>
         <el-input
           type="textarea"
@@ -89,32 +91,93 @@
       </el-dropdown>
 
 
-      <el-form-item label="PretrainedModelUri" prop="name" required>
-        <el-input
-          type="textarea"
-          autosize
-          placeholder="Please input"
-          v-model="PretrainedModelUri">
-        </el-input>
-      </el-form-item>
-      <el-form-item label="TrainDataUri" prop="name" required>
-        <el-input
-          type="textarea"
-          autosize
-          placeholder="Please input"
-          v-model="TrainDataUri">
-        </el-input>
-      </el-form-item>
-      <el-form-item label="TestDataUri" prop="name" required>
-        <el-input
-          type="textarea"
-          autosize
-          placeholder="Please input"
-          v-model="TestDataUri">
-        </el-input>
-      </el-form-item>
+      <el-form ref="form" :model="form" label-width="180px">
+        <el-form-item
+          label="cpus" required>
+          <el-input  v-model.number="form.cpus" auto-complete="off" :placeholder="this.sum[0][2]+' cpus available'"></el-input>
+        </el-form-item>
+        <el-form-item
+          label="gpus" required>
+          <el-input  v-model.number="form.gpus" auto-complete="off" :placeholder="this.sum[1][2]+' gpus available'"></el-input>
+        </el-form-item>
+        <el-form-item
+          label="mem" required>
+          <el-input  v-model.number="form.mem" auto-complete="off" :placeholder="this.sum[2][2]+' mem available'"></el-input>
+        </el-form-item>
+        <el-form-item
+          label="disk" required>
+          <el-input  v-model.number="form.disk" auto-complete="off" :placeholder="this.sum[3][2]+' disk available'"></el-input>
+        </el-form-item>
+      </el-form>
 
+      <el-collapse accordion style="width: 586px;margin-left:180px">
 
+        <el-collapse-item title="PretrainedModelUri">
+          <el-form-item label="PretrainedModelUri" prop="name" required style="margin-left: -30px">
+            <el-input v-model="PretrainedModelUri" ></el-input>
+          </el-form-item>
+          <el-form :model="dynamicValidateForm" ref="dynamicValidateForm"  class="demo-dynamic" >
+            <el-form-item
+              v-for="(domain, index) in dynamicValidateForm.domains"
+              :label="'PretrainedModelUri' + index"
+              :key="domain.key"
+              :prop="'domains.' + index + '.value'"
+              style="width:500px" >
+              <div style="display: flex">
+                <el-input v-model="domain.value" ></el-input><el-button @click.prevent="removeDomain(domain)" >delete</el-button>
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <el-button @click="addDomain" type="primary">add</el-button>
+              <el-button @click="resetForm('dynamicValidateForm')">reset</el-button>
+            </el-form-item>
+          </el-form>
+        </el-collapse-item>
+
+        <el-collapse-item title="TrainDataUri">
+          <el-form-item label="TrainDataUri" prop="name" required style="margin-left: -85px">
+            <el-input v-model="TrainDataUri" ></el-input>
+          </el-form-item>
+          <el-form :model="dynamicValidateForm1" ref="dynamicValidateForm1"  class="demo-dynamic" >
+            <el-form-item
+              v-for="(domain, index) in dynamicValidateForm1.domains"
+              :label="'TestDataUri' + index"
+              :key="domain.key"
+              :prop="'domains.' + index + '.value'"
+              style="width:500px" >
+              <div style="display: flex">
+                <el-input v-model="domain.value" ></el-input><el-button @click.prevent="removeDomain1(domain)" >delete</el-button>
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <el-button @click="addDomain1" type="primary">add</el-button>
+              <el-button @click="resetForm('dynamicValidateForm1')">reset</el-button>
+            </el-form-item>
+          </el-form>
+        </el-collapse-item>
+
+        <el-collapse-item title="TestDataUri" >
+          <el-form-item label="TestDataUri" prop="name" required style="margin-left: -85px">
+            <el-input v-model="TestDataUri" ></el-input>
+          </el-form-item>
+          <el-form :model="dynamicValidateForm2" ref="dynamicValidateForm2"  class="demo-dynamic" >
+            <el-form-item
+              v-for="(domain, index) in dynamicValidateForm2.domains"
+              :label="'TestDataUri' + index"
+              :key="domain.key"
+              :prop="'domains.' + index + '.value'"
+              style="width:500px" >
+              <div style="display: flex">
+                <el-input v-model="domain.value" ></el-input><el-button @click.prevent="removeDomain2(domain)" >delete</el-button>
+              </div>
+            </el-form-item>
+            <el-form-item>
+              <el-button @click="addDomain2" type="primary">add</el-button>
+              <el-button @click="resetForm('dynamicValidateForm2')">reset</el-button>
+            </el-form-item>
+          </el-form>
+        </el-collapse-item>
+      </el-collapse>
 
       <el-form-item class="submitbtn">
         <el-button type="primary" @click="submit">Create</el-button>
@@ -128,7 +191,9 @@
 <script>
   import { mapState, mapMutations } from 'vuex'
   import router from 'vue-router'
+  import ElForm from "../../node_modules/element-ui/packages/form/src/form";
   export default {
+    components: {ElForm},
     data () {
       return {
         activeName: 'first',
@@ -143,6 +208,27 @@
         textarea:"",
         textarea1:"",
         textarea2:"",
+        form:{
+            cpus:'',
+            gpus:'',
+            mem:'',
+            disk:''
+        },
+        dynamicValidateForm: {
+          domains: [{
+            value: ''
+          }],
+        },
+        dynamicValidateForm1: {
+          domains: [{
+            value: ''
+          }],
+        },
+        dynamicValidateForm2: {
+          domains: [{
+            value: ''
+          }],
+        }
 
       }
     },
@@ -150,7 +236,8 @@
 
       ...mapState({
         docker:state=>state.data.docker,
-        dockertag:state=>state.data.dockertag
+        dockertag:state=>state.data.dockertag,
+        sum:state=>state.data.sum
       })
     },
     methods:{
@@ -181,19 +268,32 @@
 //          console.log(document.getElementById('Model').files[0],document.getElementById('TrainScript').files[0],
         //           document.getElementById('Solver').files[0],document.getElementById('PythonLayers').files[0]);
         //console.log(this.text1)
+        var resPMU=this.PretrainedModelUri;
+        var resTDU=this.TrainDataUri;
+        var resTDU1=this.TestDataUri;
+        this.dynamicValidateForm.domains.forEach(function (ele, index) {
+          resPMU+=";"+ele.value;
+        })
+        this.dynamicValidateForm1.domains.forEach(function (ele, index) {
+          resTDU+=";"+ele.value;
+        })
+        this.dynamicValidateForm2.domains.forEach(function (ele, index) {
+          resTDU1+=";"+ele.value;
+        })
+        console.log(resPMU,resTDU,resTDU1);
         var form=new FormData();
         form.append('Model',document.getElementById('Model').files[0]);
         form.append('TranScript',document.getElementById('TrainScript').files[0]);
         form.append('Solver',document.getElementById('Solver').files[0]);
         form.append('PythonLayers',document.getElementById('PythonLayers').files[0]);
         form.append('DockerImage',this.DockerImage);
-        form.append('TrainDataUri',this.TrainDataUri);
-        form.append('TestDataUri',this.TestDataUri);
-        form.append('PretrainedModelUri',this.PretrainedModelUri);
-        form.append('Gpus','1');
-        form.append('Cpus','1');
-        form.append('Mem','16');
-        form.append('Disk','256');
+        form.append('TrainDataUri',resTDU);
+        form.append('TestDataUri',resTDU1);
+        form.append('PretrainedModelUri',resPMU);
+        form.append('Gpus',this.form.gpus);
+        form.append('Cpus',this.form.cpus);
+        form.append('Mem',this.form.mem);
+        form.append('Disk',this.form.disk);
         form.append('Instances','1');
         //console.log(this.DockerImage);
         this.$http({
@@ -214,6 +314,45 @@
 
         })
       },
+      resetForm(formName) {
+        this.$refs[formName].resetFields();
+      },
+      removeDomain(item) {
+        var index = this.dynamicValidateForm.domains.indexOf(item)
+        if (index !== -1) {
+          this.dynamicValidateForm.domains.splice(index, 1)
+        }
+      },
+      removeDomain1(item) {
+        var index = this.dynamicValidateForm1.domains.indexOf(item)
+        if (index !== -1) {
+          this.dynamicValidateForm.domains1.splice(index, 1)
+        }
+      },
+      removeDomain2(item) {
+        var index = this.dynamicValidateForm2.domains.indexOf(item)
+        if (index !== -1) {
+          this.dynamicValidateForm2.domains.splice(index, 1)
+        }
+      },
+      addDomain() {
+        this.dynamicValidateForm.domains.push({
+          value: '',
+          key: Date.now()
+        });
+      },
+      addDomain1() {
+        this.dynamicValidateForm.domains.push({
+          value: '',
+          key: Date.now()
+        });
+      },
+      addDomain2() {
+        this.dynamicValidateForm.domains.push({
+          value: '',
+          key: Date.now()
+        });
+      }
     }
   }
 
