@@ -83,17 +83,29 @@
       },
       handleEnter(index, row){
         //router.push({ name: 'detail', params: { index: index }})
-         // console.log(index)
-        var that=this;
-        setInterval(function () {
+        // console.log(index)
+        var that = this;
+        //console.log(this.tableData[index].state)
+        that.$store.dispatch('getTaskList', {
+          that: that,
+          id: that.tableData[index].name
+        })
+        that.$store.dispatch('getChartSource', {
+          that: that,
+          id: that.tableData[index].name
+        })
+        if (this.tableData[index].state == 'TASK_RUNNING') {
+          setInterval(function () {
             //console.log(that,index);
+            that.$store.dispatch('getChartSource', {
+              that: that,
+              id: that.tableData[index].name
+            })
 
-          //chart放在interval里，detail就request一次
-          that.$store.dispatch('getTaskList',{
-              that:that,
-            id:that.tableData[index].name
-          })
-        },5000)
+            //chart放在interval里，detail就request一次
+
+          }, 2000)
+        }
       }
     },
     computed:{

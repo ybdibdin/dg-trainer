@@ -15,7 +15,7 @@
               <el-input
                 type="textarea"
                 :autosize="{ minRows: 18, maxRows: 20}"
-                placeholder="请输入内容请问"
+                placeholder="请输入内容"
                 v-model="textarea">
               </el-input>
               <el-button @click="dialogModel = false" size="small">Cancel</el-button>
@@ -29,7 +29,7 @@
               <el-input
                 type="textarea"
                 :autosize="{ minRows: 18, maxRows: 20}"
-                placeholder="请输入内容请问"
+                placeholder="请输入内容"
                 v-model="textarea1">
               </el-input>
               <el-button @click="dialogSolver = false" size="small">Cancel</el-button>
@@ -45,7 +45,7 @@
               <el-input
                 type="textarea"
                 :autosize="{ minRows: 18, maxRows: 20}"
-                placeholder="请输入内容请问"
+                placeholder="请输入内容"
                 v-model="textarea2">
               </el-input>
               <el-button @click="dialogScript = false" size="small">Cancel</el-button>
@@ -271,15 +271,21 @@
         var resPMU=this.PretrainedModelUri;
         var resTDU=this.TrainDataUri;
         var resTDU1=this.TestDataUri;
-        this.dynamicValidateForm.domains.forEach(function (ele, index) {
-          resPMU+=";"+ele.value;
-        })
-        this.dynamicValidateForm1.domains.forEach(function (ele, index) {
-          resTDU+=";"+ele.value;
-        })
-        this.dynamicValidateForm2.domains.forEach(function (ele, index) {
-          resTDU1+=";"+ele.value;
-        })
+        if(this.dynamicValidateForm.domains.length>0) {
+          this.dynamicValidateForm.domains.forEach(function (ele, index) {
+            resPMU += ";" + ele.value;
+          })
+        }
+        if(this.dynamicValidateForm1.domains.length>0) {
+          this.dynamicValidateForm1.domains.forEach(function (ele, index) {
+            resTDU += ";" + ele.value;
+          })
+        }
+        if(this.dynamicValidateForm2.domains.length>0) {
+          this.dynamicValidateForm2.domains.forEach(function (ele, index) {
+            resTDU1 += ";" + ele.value;
+          })
+        }
         console.log(resPMU,resTDU,resTDU1);
         var form=new FormData();
         form.append('Model',document.getElementById('Model').files[0]);
@@ -342,13 +348,13 @@
         });
       },
       addDomain1() {
-        this.dynamicValidateForm.domains.push({
+        this.dynamicValidateForm1.domains.push({
           value: '',
           key: Date.now()
         });
       },
       addDomain2() {
-        this.dynamicValidateForm.domains.push({
+        this.dynamicValidateForm2.domains.push({
           value: '',
           key: Date.now()
         });

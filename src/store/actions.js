@@ -7,9 +7,9 @@ const actions={
       let sum=[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
       let docker=[];
       let dockertag=[];
-      await that.$http.get('http://192.168.6.66:8081/dgtrainer/v1/resources').then(response => {
+      await that.$http.get('http://192.168.6.66:8082/dgtrainer/v1/resources').then(response => {
         // success callback
-        console.log(response);
+        //console.log('getAllData;',response);
         //console.log(JSON.stringify(response.data.slaves[0].resources))
         // console.log(JSON.parse(response.request.response).slaves.length);
         for(var i=0;i<response.data.slaves.length;i++){
@@ -44,7 +44,7 @@ const actions={
       }, response => {
         // error callback
       })
-      await that.$http.get('http://192.168.6.66:8081/dgtrainer/v1/tasks').then(response => {
+      await that.$http.get('http://192.168.6.66:8082/dgtrainer/v1/tasks').then(response => {
         //console.log('table response',response)
         for(var x in response.data){
           if(response.data[x]){
@@ -95,7 +95,7 @@ const actions={
         // error callback
       })
 
-      await that.$http.get('http://192.168.6.66:8081/dgtrainer/v1/images').then(response => {
+      await that.$http.get('http://192.168.6.66:8082/dgtrainer/v1/images').then(response => {
         // success callback
         //console.log('docker',response.data);
         docker=response.data;
@@ -104,7 +104,7 @@ const actions={
         // error callback
       })
 
-      await that.$http.get('http://192.168.6.66:8081/dgtrainer/v1/image/caffe/tags').then(response => {
+      await that.$http.get('http://192.168.6.66:8082/dgtrainer/v1/image/caffe/tags').then(response => {
         // success callback
         //console.log('docker',response.data);
         dockertag=response.data;
@@ -118,21 +118,37 @@ const actions={
 
   },
   getTaskList:async({commit},{that,id})=>{
-    console.log('gettasklist',id);
+    //console.log('gettasklist',id);
     let reslist=[];
+    let filecontent='';
+    let filelist=[];
     await that.$http.get('http://192.168.6.66:8082/dgtrainer/v1/task/'+id+'/files').then(response =>{
-      console.log(response)
+      //console.log('filelist',response.data);
+      filelist=response.data;
     },response=>{})
 
-    await that.$http.get('http://192.168.6.66:8082/dgtrainer/v1/task/'+id+'file?filename=script/train.sh').then(response=>{
-      console.log(response)
+    await that.$http.get('http://192.168.6.66:8082/dgtrainer/v1/task/'+id+'/file?filename=script/train.sh').then(response=>{
+      //console.log('filecontent',response.data);
+      filecontent=response.data;
     },response=>{})
 
-    //commit('gettasklist',{})
+    commit('gettasklist',{filelist,filecontent})
   },
 
 
 
+  getChartSource:({commit},{that,id})=>{
+      // var source=[];
+    that.$http.get('http://192.168.6.66:8082/dgtrainer/v1/task/'+id+'/statistics').then(response =>{
+      //console.log('source',response.data);
+      var source=response.data;
+      //console.log('source-act',source);
+      commit('getchartsource',{source})
+    },response=>{})
+
+
+
+  }
 
 }
 
