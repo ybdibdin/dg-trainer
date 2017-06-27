@@ -95,22 +95,25 @@
           id: that.tableData[index].name
         })
         if (this.tableData[index].state == 'TASK_RUNNING') {
-          setInterval(function () {
-            //console.log(that,index);
-            that.$store.dispatch('getChartSource', {
-              that: that,
-              id: that.tableData[index].name
-            })
 
-            //chart放在interval里，detail就request一次
+          //this.$store.commit('changedeter', true)
+            setInterval(function () {
+                //console.log(that,index);
+                that.$store.dispatch('getChartSource', {
+                  that: that,
+                  id: that.tableData[index].name
+                })
+              //chart放在interval里，detail就request一次
 
-          }, 2000)
+            }, 8000)
+
         }
       }
     },
     computed:{
       ...mapState({
-        tableData:state=>state.data.tasklist
+        tableData:state=>state.data.tasklist,
+        requestchart:state=>state.data.deter
       })
     }
   }

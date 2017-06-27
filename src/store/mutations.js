@@ -14,6 +14,9 @@ const mutations={
   getchartsource:(state,source)=>{
     //console.log('soruce',source);
     state.source=source
+  },
+  changedeter:(state,change)=>{
+    state.data.deter=change;
   }
 
 }

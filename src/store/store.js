@@ -12,7 +12,15 @@ let state={
     tasklist:[],
     sum:[],
     docker:[],
-    dockertag:[]
+    dockertag:[],
+    deter:false
+  },
+  file:{
+    filelist:[],
+    filecontent:''
+  },
+  source:{
+    source:[]
   }
 
 }

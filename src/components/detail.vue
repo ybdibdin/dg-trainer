@@ -51,10 +51,18 @@
         :height=420>
           <el-table-column
             prop="name"
-            label="filelist----source">
+            label="filelist----source"
+          >
+          </el-table-column>
+          <el-table-column label="下载">
+            <template scope="scope">
+              <el-button
+                size="small"
+                @click="handleDownload(scope.$index, scope.row)">download</el-button>
+            </template>
           </el-table-column>
         </el-table>
-        <el-input type="textarea" :rows="15" v-model="logsdetail" placeholder="no data" :disabled="true"></el-input>
+        <el-input type="textarea" :rows="15" v-model="logsdetail" placeholder="no data"></el-input>
       </el-tab-pane>
     </el-tabs>
 
@@ -65,7 +73,9 @@
 <script>
   var echarts = require('echarts');
   import { mapState, mapMutations } from 'vuex'
+  import ElButton from "../../node_modules/element-ui/packages/button/src/button";
   export default {
+    components: {ElButton},
     data () {
       return {
         index:this.$route.params.index,
@@ -79,9 +89,7 @@
     methods:{
       handleClick(tab, event)
       {
-        //console.log(tab, event);
-        //console.log('filelist',this.filelist)
-        //console.log('!!',this.showtask[this.index].state)
+
         this.logsdetail=this.filecontent;
         if(this.showtask[this.index].state=='TASK_RUNNING') {
           if (tab.name == 'second') {
@@ -109,6 +117,11 @@
             }
           },5000)
 
+      },
+      handleDownload(index,row){
+//          console.log(row.name)
+//        console.log(this.showtask[this.index].name)
+        window.location.href='http://192.168.6.66:8082/dgtrainer/v1/task/'+this.showtask[this.index].name+'/file?filename='+row.name;
       }
 
     },
@@ -119,6 +132,15 @@
       }
     },
     computed:{
+      loss() {
+        return this.$store.getters.loss
+      },
+      lr(){
+          return this.$store.getters.lr
+      },
+      loss_belt(){
+          return this.$store.getters.loss_belt
+      },
       ...mapState({
         showtask:state=>state.data.tasklist,
         filecontent:state=>state.file.filecontent,
@@ -130,36 +152,34 @@
          })
           return res;
         },
-        loss:state=> {
-          var result=[];
-          var res=[];
-            state.source.source.forEach(function (ele, index, self) {
-              for(let x in ele){
-                //console.log(ele[0]['loss'])
-                result.push({
-                  name:x.toString(),
-                  value:[x.toString(),ele[x]['loss']]
-                })
-              }
+//        loss:state=> {
+//          let result=[];
+//            state.source.source.forEach(function (ele, index, self) {
+//              for(let x in ele){
+//                //console.log(ele[0]['loss'])
+//                result.push({
+//                  name:(x+'loss').toString(),
+//                  value:[x.toString(),ele[x]['loss']]
+//                })
+//              }
+//
+//            })
+//          return result;
+//        }
 
-            })
-          for(let i=0;i<1000;i++){
-            res.push(result.pop());
-          }
-          return res;
-        }
 
       })
     },
     mounted(){
-
-
       var myChart = echarts.init(document.getElementById('main'));
-      //console.log(this.loss)
-      var data1=this.loss;
+      myChart.showLoading({
+        text: '加载中...',
+        effect: 'whirling'
+      });
+      setTimeout(function () {
+          myChart.hideLoading();
+      },5000)
 
-
-      //console.log(data1)
       var option = {
         title: {
           text: 'running中的数据动态'
@@ -169,58 +189,53 @@
         },
         xAxis: {
           type: 'value',
+          boundaryGap:['%30','79%'],
           splitLine: {
             show: true
           }
         },
         yAxis: {
           type: 'value',
-          boundaryGap: [0, '100%'],
+          boundaryGap: [0, '10%'],
           splitLine: {
             show: true
           }
         },
         series: [{
-          name: 'loss',
+          name: 'loss1',
           type: 'line',
           showSymbol: false,
           hoverAnimation: true,
-          data: data1
-        }]
+          data: this.loss
+        }, {
+            name: 'lr',
+            type: 'line',
+            showSymbol: false,
+            hoverAnimation: true,
+            data: this.lr
+          },{
+            name: 'loss_belt',
+            type: 'line',
+            showSymbol: false,
+            hoverAnimation: true,
+            data: this.loss_belt
+          }]
       };
       myChart.setOption(option,true);
+
       var that=this;
       setInterval(function () {
-        //console.log(that.loss);
+        //console.log(that.loss_belt[that.loss_belt.length-1])
         myChart.setOption({
           series: [{
-            data: that.loss
+            data: that.loss_belt
           }]
         });
-      },2000)
-      //var that=this;
-//      setInterval(function () {
-//
-//        for (let i = 0; i < 1000; i++) {
-//          that.source.forEach(function (ele, index, self) {
-//            for(let x in ele){
-//              //console.log(ele[0]['loss'])
-//              result.push({
-//                name:x.toString(),
-//                value:[x.toString(),ele[x]['loss']]
-//              })
-//            }
-//
-//          })
-//          data.push(result.shift())
-//        }
-//        myChart.setOption({
-//          series: [{
-//            data: data
-//          }]
-//        });
-//      }, 5000);
-    }
+      },8000)
+    },
+//    destoryed(){
+//        this.$store.commit('changedeter',false)
+//    }
   }
 
 
