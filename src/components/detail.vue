@@ -189,7 +189,6 @@
         },
         xAxis: {
           type: 'value',
-          boundaryGap:['%30','79%'],
           splitLine: {
             show: true
           }
@@ -231,7 +230,7 @@
             data: that.loss_belt
           }]
         });
-      },8000)
+      },1000)
     },
 //    destoryed(){
 //        this.$store.commit('changedeter',false)

@@ -123,7 +123,7 @@ const actions={
     let filecontent='';
     let filelist=[];
     await that.$http.get('http://192.168.6.66:8082/dgtrainer/v1/task/'+id+'/files').then(response =>{
-      //console.log('filelist',response.data);
+      console.log('filelist',response.data);
       filelist=response.data;
     },response=>{})
 
@@ -140,7 +140,7 @@ const actions={
   getChartSource:({commit},{that,id})=>{
       // var source=[];
     that.$http.get('http://192.168.6.66:8082/dgtrainer/v1/task/'+id+'/statistics').then(response =>{
-      //console.log('source',response.data);
+      console.log('source',response.data);
       var source=response.data;
       //console.log('source-act',source);
       commit('getchartsource',{source})
