@@ -13,15 +13,14 @@ let state={
     sum:[],
     docker:[],
     dockertag:[],
-    deter:false
+
   },
   file:{
     filelist:[],
     filecontent:''
   },
-  source:{
     source:[]
-  }
+
 
 }
 

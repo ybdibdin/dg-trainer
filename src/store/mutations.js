@@ -11,12 +11,16 @@ const mutations={
   gettasklist:(state,datafile)=>{
     state.file=datafile
   },
-  getchartsource:(state,source)=>{
-    //console.log('soruce',source);
-    state.source=source
-  },
-  changedeter:(state,change)=>{
-    state.data.deter=change;
+  getchartsource:(state,source)=> {
+
+    if(source.begin == 0){
+      state.source=source.source;
+    }else{
+      state.source=state.source.concat(source.source);
+      // state.source=state.source.reverse().slice(0,2000).reverse();
+      // console.log(state.source.length);
+    }
+
   }
 
 }

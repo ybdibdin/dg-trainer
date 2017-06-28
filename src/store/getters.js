@@ -1,7 +1,11 @@
 const getters={
+
+    chartlen:state=>{
+       return state.source.length;
+    },
     loss:state=>{
       let result=[];
-      state.source.source.forEach(function (ele, index, self) {
+      state.source.forEach(function (ele, index, self) {
         for(let x in ele){
           //console.log(ele[0]['loss'])
           result.push({
@@ -15,7 +19,7 @@ const getters={
     },
   lr:state=>{
     let result=[];
-    state.source.source.forEach(function (ele, index, self) {
+    state.source.forEach(function (ele, index, self) {
       for(let x in ele){
         //console.log(ele[0]['loss'])
         result.push({
@@ -29,7 +33,7 @@ const getters={
   },
   loss_belt:state=>{
     let result=[];
-    state.source.source.forEach(function (ele, index, self) {
+    state.source.forEach(function (ele, index, self) {
       for(let x in ele){
         //console.log(ele[0]['loss'])
         result.push({

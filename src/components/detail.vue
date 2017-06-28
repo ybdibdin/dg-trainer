@@ -42,7 +42,9 @@
     </el-card>
     <el-tabs v-model="activeName" @tab-click="handleClick" style="width: 100%;height: 90vh;">
       <el-tab-pane label="show me the chart" name="first">
-        <div id="main" style="height: 500px;width: 1000px;"></div>
+        <div id="main1" style="height: 500px;width: 1000px;"></div>
+        <div id="main2" style="height: 500px;width: 1000px;"></div>
+        <div id="main3" style="height: 500px;width: 1000px;"></div>
       </el-tab-pane>
       <el-tab-pane label="show me the detail" name="second">
         <el-table
@@ -132,6 +134,9 @@
       }
     },
     computed:{
+      chartlen(){
+        return this.$store.getters.chartlen
+      },
       loss() {
         return this.$store.getters.loss
       },
@@ -170,17 +175,45 @@
 
       })
     },
+    created(){
+      let that = this;
+      setInterval(function () {
+        //console.log('thatsource',that.$store.state.source[that.chartlen-1],that.$store.state.source.length)
+        for(let i in that.$store.state.source[that.chartlen-1]){
+            var begin=i/20+1;
+        }
+        //console.log(that,index);
+        that.$store.dispatch('getChartSource', {
+          that: that,
+          id: that.showtask[that.index].name,
+          begin:begin
+        })
+
+      }, 4000)
+    },
     mounted(){
-      var myChart = echarts.init(document.getElementById('main'));
-      myChart.showLoading({
+      var myChart1 = echarts.init(document.getElementById('main1'));
+      var myChart2 = echarts.init(document.getElementById('main2'));
+      var myChart3 = echarts.init(document.getElementById('main3'));
+      myChart1.showLoading({
+        text: '加载中...',
+        effect: 'whirling'
+      });
+      myChart2.showLoading({
+        text: '加载中...',
+        effect: 'whirling'
+      });
+      myChart3.showLoading({
         text: '加载中...',
         effect: 'whirling'
       });
       setTimeout(function () {
-          myChart.hideLoading();
+          myChart1.hideLoading();
+        myChart2.hideLoading();
+        myChart3.hideLoading();
       },5000)
 
-      var option = {
+      var option1= {
         title: {
           text: 'running中的数据动态'
         },
@@ -200,37 +233,147 @@
             show: true
           }
         },
+        dataZoom: [{
+          type: 'inside',
+          start: 0,
+          end: 100
+        }, {
+          start: 0,
+          end: 50,
+          handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+          handleSize: '80%',
+          handleStyle: {
+            color: '#eee',
+            shadowBlur: 5,
+            shadowColor: 'rgba(0, 0, 0, 0.6)',
+            shadowOffsetX: 2,
+            shadowOffsetY: 2
+          }
+        }],
         series: [{
-          name: 'loss1',
+          name: 'loss',
           type: 'line',
           showSymbol: false,
           hoverAnimation: true,
           data: this.loss
-        }, {
-            name: 'lr',
-            type: 'line',
-            showSymbol: false,
-            hoverAnimation: true,
-            data: this.lr
-          },{
-            name: 'loss_belt',
-            type: 'line',
-            showSymbol: false,
-            hoverAnimation: true,
-            data: this.loss_belt
-          }]
+        }]
       };
-      myChart.setOption(option,true);
+      var option2 = {
+        title: {
+          text: 'running中的数据动态'
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            animation: true
+          }
+        },
+        xAxis: {
+          type: 'value',
+          splitLine: {
+            show: true
+          }
+        },
+        yAxis: {
+          type: 'value',
+          boundaryGap: [0, '10%'],
+          splitLine: {
+            show: true
+          }
+        },
+        dataZoom: [{
+          type: 'inside',
+          start: 0,
+          end: 100
+        }, {
+          start: 0,
+          end: 50,
+          handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+          handleSize: '80%',
+          handleStyle: {
+            color: '#eee',
+            shadowBlur: 5,
+            shadowColor: 'rgba(0, 0, 0, 0.6)',
+            shadowOffsetX: 2,
+            shadowOffsetY: 2
+          }
+        }],
+        series: [{
+          name: 'lr',
+          type: 'line',
+          showSymbol: false,
+          hoverAnimation: true,
+          data: this.lr
+        }]
+      };
+      var option3 = {
+        title: {
+          text: 'running中的数据动态'
+        },
+        tooltip: {
+          trigger: 'axis',
+        },
+        xAxis: {
+          type: 'value',
+          splitLine: {
+            show: true
+          }
+        },
+        yAxis: {
+          type: 'value',
+          boundaryGap: [0, '10%'],
+          splitLine: {
+            show: true
+          }
+        },
+        dataZoom: [{
+          type: 'inside',
+          start: 0,
+          end: 100
+        }, {
+          start: 0,
+          end: 50,
+          handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+          handleSize: '80%',
+          handleStyle: {
+            color: '#eee',
+            shadowBlur: 5,
+            shadowColor: 'rgba(0, 0, 0, 0.6)',
+            shadowOffsetX: 2,
+            shadowOffsetY: 2
+          }
+        }],
+        series: [{
+          name: 'loss_belt',
+          type: 'line',
+          showSymbol: false,
+          hoverAnimation: true,
+          data: this.loss_belt
+        }]
+      };
+      myChart1.setOption(option1,true);
+      myChart2.setOption(option2,true);
+      myChart3.setOption(option3,true);
 
       var that=this;
       setInterval(function () {
         //console.log(that.loss_belt[that.loss_belt.length-1])
-        myChart.setOption({
+        myChart1.setOption({
+          series: [{
+            data: that.loss
+          }]
+        });
+        myChart2.setOption({
+          series: [{
+            data: that.lr
+          }]
+        });
+        myChart3.setOption({
           series: [{
             data: that.loss_belt
           }]
         });
-      },1000)
+      },3000)
     },
 //    destoryed(){
 //        this.$store.commit('changedeter',false)

@@ -82,38 +82,33 @@
         //console.log(index, row);
       },
       handleEnter(index, row){
-        //router.push({ name: 'detail', params: { index: index }})
-        // console.log(index)
         var that = this;
-        //console.log(this.tableData[index].state)
+        for(let i in that.$store.state.source[that.chartlen-1]){
+          var begin=i/20+1;
+        }
+
         that.$store.dispatch('getTaskList', {
           that: that,
           id: that.tableData[index].name
         })
         that.$store.dispatch('getChartSource', {
           that: that,
-          id: that.tableData[index].name
+          id: that.tableData[index].name,
+          begin:begin||0
         })
-        if (this.tableData[index].state == 'TASK_RUNNING') {
-
-          //this.$store.commit('changedeter', true)
-            setInterval(function () {
-                //console.log(that,index);
-                that.$store.dispatch('getChartSource', {
-                  that: that,
-                  id: that.tableData[index].name
-                })
-              //chart放在interval里，detail就request一次
-
-            }, 8000)
-
-        }
+//        if (this.tableData[index].state == 'TASK_RUNNING') {
+//
+//
+//        }
       }
     },
     computed:{
+        chartlen(){
+          return this.$store.getters.chartlen
+        },
       ...mapState({
         tableData:state=>state.data.tasklist,
-        requestchart:state=>state.data.deter
+        requestchart:state=>state.data.deter,
       })
     }
   }
