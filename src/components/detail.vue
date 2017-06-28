@@ -41,9 +41,13 @@
       </div>
     </el-card>
     <el-tabs v-model="activeName" @tab-click="handleClick" style="width: 100%;height: 90vh;">
-      <el-tab-pane label="show me the chart" name="first">
+      <el-tab-pane label="show me the chart-loss" name="first">
         <div id="main1" style="height: 500px;width: 1000px;"></div>
+      </el-tab-pane>
+      <el-tab-pane label="show me the chart-lr" name="forth">
         <div id="main2" style="height: 500px;width: 1000px;"></div>
+      </el-tab-pane>
+      <el-tab-pane label="show me the chart-loss_belt" name="fifth">
         <div id="main3" style="height: 500px;width: 1000px;"></div>
       </el-tab-pane>
       <el-tab-pane label="show me the detail" name="second">
@@ -64,7 +68,10 @@
             </template>
           </el-table-column>
         </el-table>
-        <el-input type="textarea" :rows="15" v-model="logsdetail" placeholder="no data"></el-input>
+        <el-input type="textarea" :rows="15" v-model="logsdetail" placeholder="no data" ></el-input>
+      </el-tab-pane>
+      <el-tab-pane label="show me the logs" name="third">
+        <el-input type="textarea" :rows="60" v-model="logsshow" placeholder="no data" style="overflow: scroll"></el-input>
       </el-tab-pane>
     </el-tabs>
 
@@ -83,7 +90,7 @@
         index:this.$route.params.index,
         activeName: 'first',
         deter:false,
-        logs:'',
+        logsshow:'',
         logsdetail:'',
         count:false,
       }
@@ -93,8 +100,9 @@
       {
 
         this.logsdetail=this.filecontent;
+        this.logsshow=this.logs;
         if(this.showtask[this.index].state=='TASK_RUNNING') {
-          if (tab.name == 'second') {
+          if (tab.name == 'third') {
             console.log('begin get')
             this.deter = true;
             if (this.count = false) {
@@ -171,7 +179,7 @@
 //            })
 //          return result;
 //        }
-
+        logs:state=>state.file.logs
 
       })
     },
@@ -180,7 +188,7 @@
       setInterval(function () {
         //console.log('thatsource',that.$store.state.source[that.chartlen-1],that.$store.state.source.length)
         for(let i in that.$store.state.source[that.chartlen-1]){
-            var begin=i/20+1;
+            var begin=Math.ceil(i/20+1);
         }
         //console.log(that,index);
         that.$store.dispatch('getChartSource', {
@@ -208,17 +216,25 @@
         effect: 'whirling'
       });
       setTimeout(function () {
-          myChart1.hideLoading();
+        myChart1.hideLoading();
         myChart2.hideLoading();
         myChart3.hideLoading();
       },5000)
 
       var option1= {
         title: {
-          text: 'running中的数据动态'
+          text: 'running中的 loss'
         },
         tooltip: {
           trigger: 'axis',
+        },
+        toolbox: {
+          show: true,
+          feature: {
+            dataView: {readOnly: false},
+            restore: {},
+            saveAsImage: {}
+          }
         },
         xAxis: {
           type: 'value',
@@ -260,12 +276,20 @@
       };
       var option2 = {
         title: {
-          text: 'running中的数据动态'
+          text: 'running中的 lr'
         },
         tooltip: {
           trigger: 'axis',
           axisPointer: {
             animation: true
+          }
+        },
+        toolbox: {
+          show: true,
+          feature: {
+            dataView: {readOnly: false},
+            restore: {},
+            saveAsImage: {}
           }
         },
         xAxis: {
@@ -308,10 +332,18 @@
       };
       var option3 = {
         title: {
-          text: 'running中的数据动态'
+          text: 'running中的 loss_belt'
         },
         tooltip: {
           trigger: 'axis',
+        },
+        toolbox: {
+          show: true,
+          feature: {
+            dataView: {readOnly: false},
+            restore: {},
+            saveAsImage: {}
+          }
         },
         xAxis: {
           type: 'value',

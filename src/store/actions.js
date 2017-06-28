@@ -122,6 +122,7 @@ const actions={
     let reslist=[];
     let filecontent='';
     let filelist=[];
+    let logs='';
     await that.$http.get('http://192.168.6.66:8082/dgtrainer/v1/task/'+id+'/files').then(response =>{
       //console.log('filelist',response.data);
       filelist=response.data;
@@ -131,13 +132,20 @@ const actions={
       //console.log('filecontent',response.data);
       filecontent=response.data;
     },response=>{})
+    await that.$http.get('http://192.168.6.66:8082/dgtrainer/v1/task/'+id+'/logs').then(response=>{
+      //console.log('logs',response.data);
+      logs=response.data;
+    },response=>{})
 
-    commit('gettasklist',{filelist,filecontent})
+    commit('gettasklist',{filelist,filecontent,logs})
   },
 
 
 
   getChartSource:({commit},{that,id,begin})=>{
+    if(begin==undefined){
+      begin =0;
+    }
     let end =0;
     if(begin == 0){
        end=2000;

@@ -17,7 +17,8 @@ let state={
   },
   file:{
     filelist:[],
-    filecontent:''
+    filecontent:'',
+    logs:''
   },
     source:[]
 
