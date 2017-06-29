@@ -238,7 +238,7 @@
           lineNumbers: true,
           line: true,
           mode: 'mymode',
-          theme: 'solarized light',
+          theme: 'base16-light',
           extraKeys: {
             "Ctrl": "autocomplete" ,
             'F11'(cm) {
