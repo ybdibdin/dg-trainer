@@ -41,6 +41,7 @@
         if (this.sum.length) {
           //指定图表的配置项和数据
           var option = {
+            color:['#2f4554','#c23531', '#61a0a8', '#d48265', '#91c7ae','#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'],
             title: {
               text: 'resource  cpus',
               subtext: 'cpus',
@@ -95,6 +96,7 @@
         if (this.sum.length) {
           //指定图表的配置项和数据
           var option2 = {
+            color:['#2f4554','#c23531', '#61a0a8', '#d48265', '#91c7ae','#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'],
             title: {
               text: 'resource gpus',
               subtext: 'gpus',
@@ -146,6 +148,7 @@
       if (this.sum.length) {
         //指定图表的配置项和数据
         var option3 = {
+          color:['#2f4554','#c23531', '#61a0a8', '#d48265', '#91c7ae','#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'],
           title: {
             text: 'resource mem',
             subtext: 'mem',
@@ -200,6 +203,7 @@
       if (this.sum.length) {
         //指定图表的配置项和数据
         var option4 = {
+          color:['#2f4554','#c23531', '#61a0a8', '#d48265', '#91c7ae','#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'],
           title: {
             text: 'resource disk',
             subtext: 'disk',

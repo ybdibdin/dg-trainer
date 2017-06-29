@@ -1,6 +1,7 @@
 <template>
   <div>
     <h1>UR Task is clean5</h1>
+    <codemirror v-model="code" :options="editorOptions"></codemirror>
   </div>
 </template>
 
@@ -23,3 +24,5 @@
 <style scoped>
 
 </style>
+
+

@@ -10,7 +10,7 @@
         <el-form   label-width="180px">
           <el-form-item label="Model" required>
             <input type="file"  id="Model"/>
-            <el-button type="primary" size="mini" v-on:click="dialogModel = true" value="Model">我要自己写</el-button>
+            <router-link to="/code"><el-button type="primary" size="mini"  value="Model">我要自己写</el-button></router-link>
             <el-dialog title="Model" :visible.sync="dialogModel">
               <el-input
                 type="textarea"
@@ -26,12 +26,13 @@
             <input type="file"  id="Solver"/>
             <el-button type="primary" size="mini" v-on:click="dialogSolver = true" value="Solver">我要自己写</el-button>
             <el-dialog title="Solver" :visible.sync="dialogSolver">
-              <el-input
-                type="textarea"
-                :autosize="{ minRows: 18, maxRows: 20}"
-                placeholder="请输入内容"
-                v-model="textarea1">
-              </el-input>
+              <codemirror v-model="code"
+                          :options="editorOption"
+                          @cursorActivity="onEditorCursorActivity"
+                          @ready="onEditorReady"
+                          @focus="onEditorFocus"
+                          @blur="onEditorBlur">
+              </codemirror>
               <el-button @click="dialogSolver = false" size="small">Cancel</el-button>
               <el-button type="primary" size="small" v-on:click="writeSolver" >Submit</el-button>
             </el-dialog>
@@ -228,6 +229,36 @@
           domains: [{
             value: ''
           }],
+        },
+        code: `aaa bbb ccc 111 eee fff ggg  function(){}`,
+        editorOption: {
+          tabSize: 124,
+          matchBrackets: true,
+          styleActiveLine: true,
+          lineNumbers: true,
+          line: true,
+          mode: 'mymode',
+          theme: 'solarized light',
+          extraKeys: {
+            "Ctrl": "autocomplete" ,
+            'F11'(cm) {
+              cm.setOption("fullScreen", !cm.getOption("fullScreen"))
+            },
+            'Esc'(cm) {
+              if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false)
+            }},
+          foldGutter: true,
+          gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+          // 选中文本自动高亮，及高亮方式
+          styleSelectedText: true,
+          highlightSelectionMatches: { showToken: /\w/, annotateScrollbar: true },
+          // more codemirror config...
+          // 如果有hint方面的配置，也应该出现在这里
+          mode: {
+            name: 'javascript',
+          },
+
+
         }
 
       }
@@ -238,9 +269,24 @@
         docker:state=>state.data.docker,
         dockertag:state=>state.data.dockertag,
         sum:state=>state.data.sum
-      })
+      }),
+      editor() {
+        return this.$refs.myEditor.editor
+      }
     },
     methods:{
+      onEditorCursorActivity(codemirror) {
+        console.log('onEditorCursorActivity', codemirror)
+      },
+      onEditorReady(codemirror) {
+        console.log('onEditorReady', codemirror)
+      },
+      onEditorFocus(codemirror) {
+        console.log('onEditorFocus', codemirror)
+      },
+      onEditorBlur(codemirror) {
+        console.log('onEditorBlur', codemirror)
+      },
       handleCommand(command) {
 
       },

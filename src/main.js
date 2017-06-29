@@ -8,10 +8,12 @@ import 'element-ui/lib/theme-default/index.css'
 import axios from 'axios'
 import vuex from 'vuex'
 import store from './store/store'
+import VueCodeMirror from 'vue-codemirror'
+
 
 
 Vue.prototype.$http = axios
-
+Vue.use(VueCodeMirror)
 Vue.use(ElementUI)
 Vue.use(vuex)
 Vue.config.productionTip = false

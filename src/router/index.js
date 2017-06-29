@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import ctask from '@/components/createtask'
 //import create from '@/components/create'
-//import detail from '@/components/detail'
+import code from '@/components/code'
 import chart from '@/components/panel'
 import create from '@/components/create'
 import resourcelist from '@/components/resourcelist'
@@ -39,6 +39,10 @@ export default new Router({
       path:'/detail/:index',
       name:'detail',
       component:detail
+    },{
+      path:'/code',
+      name:'detail',
+      component:code
     }
 
   ]

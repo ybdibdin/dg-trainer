@@ -12,6 +12,7 @@
   import TopNav from './components/nav.vue';
   import LeftPanel from './components/leftpanel.vue';
   import { mapState } from 'vuex'
+  import CodeMirror from 'codemirror/lib/codemirror'   // CodeMirror，必要
 export default {
   name: 'app',
   data () {
