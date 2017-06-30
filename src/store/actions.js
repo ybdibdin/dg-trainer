@@ -152,7 +152,7 @@ const actions={
      }else{
       end=begin+200;
     }
-     console.log(begin,'end',end);
+     //console.log(begin,'end',end);
     that.$http.get('http://192.168.6.66:8082/dgtrainer/v1/task/'+id+'/statistics?start='+begin+'&end='+end).then(response =>{
       //console.log('source',response.data);
       var source=response.data;

@@ -98,9 +98,10 @@
     methods:{
       handleClick(tab, event)
       {
-
         this.logsdetail=this.filecontent;
-        this.logsshow=this.logs;
+        if(tab.name== 'third'){
+          this.logsshow=this.logs;
+        }
         if(this.showtask[this.index].state=='TASK_RUNNING') {
           if (tab.name == 'third') {
             console.log('begin get')
@@ -240,7 +241,9 @@
           type: 'value',
           splitLine: {
             show: true
-          }
+          },
+          name:'timeline',
+          //scale:true
         },
         yAxis: {
           type: 'value',
@@ -296,7 +299,8 @@
           type: 'value',
           splitLine: {
             show: true
-          }
+          },
+          name:'timeline'
         },
         yAxis: {
           type: 'value',
@@ -349,7 +353,8 @@
           type: 'value',
           splitLine: {
             show: true
-          }
+          },
+          name:'timeline',
         },
         yAxis: {
           type: 'value',

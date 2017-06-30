@@ -1,11 +1,8 @@
 <template>
   <div>
 
-  <div id="form" style="width: 60vw">
+    <div id="form" style="width: 45vw;float: left;margin-left: -70px">
     <el-form label-width="180px" class="demo-ruleForm">
-
-
-
       <div class="upload">
         <el-form   label-width="180px">
           <el-form-item label="Model" required>
@@ -58,9 +55,6 @@
           </el-form-item>
         </el-form>
       </div>
-
-
-
       <el-form-item style="display: inline-block;width: 70%;" label="DockerImage" prop="name"  required>
         <el-input
           type="textarea"
@@ -91,7 +85,6 @@
         </el-dropdown-menu>
       </el-dropdown>
 
-
       <el-form ref="form" :model="form" label-width="180px">
         <el-form-item
           label="cpus" required>
@@ -110,14 +103,16 @@
           <el-input  v-model.number="form.disk" auto-complete="off" :placeholder="this.sum[3][2]+' disk available'"></el-input>
         </el-form-item>
       </el-form>
+      </el-form>
+      <el-button type="primary" @click="submit" style="float: right">Create</el-button>
+    </div>
 
-      <el-collapse accordion style="width: 586px;margin-left:180px">
-
-        <el-collapse-item title="PretrainedModelUri">
-          <el-form-item label="PretrainedModelUri" prop="name" required style="margin-left: -30px">
-            <el-input v-model="PretrainedModelUri" ></el-input>
-          </el-form-item>
+      <div style="width: 41vw;margin-left:40vw">
+        <el-card title="PretrainedModelUri" style="height: 28vh;overflow: scroll">
           <el-form :model="dynamicValidateForm" ref="dynamicValidateForm"  class="demo-dynamic" >
+            <el-form-item label="PretrainedModelUri" prop="name" required style="margin-top: -20px">
+              <el-input v-model="PretrainedModelUri" style=""></el-input>
+            </el-form-item>
             <el-form-item
               v-for="(domain, index) in dynamicValidateForm.domains"
               :label="'PretrainedModelUri' + index"
@@ -133,13 +128,13 @@
               <el-button @click="resetForm('dynamicValidateForm')">reset</el-button>
             </el-form-item>
           </el-form>
-        </el-collapse-item>
+        </el-card>
 
-        <el-collapse-item title="TrainDataUri">
-          <el-form-item label="TrainDataUri" prop="name" required style="margin-left: -85px">
-            <el-input v-model="TrainDataUri" ></el-input>
-          </el-form-item>
+        <el-card title="TrainDataUri" style="height: 28vh;overflow: scroll">
           <el-form :model="dynamicValidateForm1" ref="dynamicValidateForm1"  class="demo-dynamic" >
+            <el-form-item label="TrainDataUri" prop="name" required style="margin-top: -15px">
+              <el-input v-model="TrainDataUri" ></el-input>
+            </el-form-item>
             <el-form-item
               v-for="(domain, index) in dynamicValidateForm1.domains"
               :label="'TestDataUri' + index"
@@ -155,13 +150,13 @@
               <el-button @click="resetForm('dynamicValidateForm1')">reset</el-button>
             </el-form-item>
           </el-form>
-        </el-collapse-item>
+        </el-card>
 
-        <el-collapse-item title="TestDataUri" >
-          <el-form-item label="TestDataUri" prop="name" required style="margin-left: -85px">
-            <el-input v-model="TestDataUri" ></el-input>
-          </el-form-item>
+        <el-card title="TestDataUri" style="height: 28vh;overflow: scroll">
           <el-form :model="dynamicValidateForm2" ref="dynamicValidateForm2"  class="demo-dynamic" >
+            <el-form-item label="TestDataUri" prop="name" required style="margin-top: -20px">
+              <el-input v-model="TestDataUri" ></el-input>
+            </el-form-item>
             <el-form-item
               v-for="(domain, index) in dynamicValidateForm2.domains"
               :label="'TestDataUri' + index"
@@ -177,14 +172,13 @@
               <el-button @click="resetForm('dynamicValidateForm2')">reset</el-button>
             </el-form-item>
           </el-form>
-        </el-collapse-item>
-      </el-collapse>
+        </el-card>
+      </div>
 
-      <el-form-item class="submitbtn">
-        <el-button type="primary" @click="submit">Create</el-button>
-      </el-form-item>
-    </el-form>
-  </div>
+
+
+
+
   </div>
 </template>
 

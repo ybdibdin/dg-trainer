@@ -1,7 +1,7 @@
 <template>
-  <div style="height: 100%;width: 100%">
+  <div style="height: 100%;width: 100%;margin: 0 auto">
     <Top-nav class="nav"></Top-nav>
-    <div style="height: 90vh;width:100%;overflow: scroll">
+    <div style="height: 88vh;width:100%;overflow: hidden;">
       <Left-panel class="leftpanel"></Left-panel>
       <router-view class="panel"></router-view>
     </div>
