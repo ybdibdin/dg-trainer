@@ -41,7 +41,7 @@ export default new Router({
       component:detail
     },{
       path:'/code',
-      name:'detail',
+      name:'code',
       component:code
     }
 

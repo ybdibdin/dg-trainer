@@ -1,20 +1,23 @@
 <template>
   <div>
 
-    <div id="form" style="width: 45vw;float: left;margin-left: -70px">
+    <div id="form" style="width: 45vw;float: left;margin-left: -60px;height: 84vh">
+      <el-card>
     <el-form label-width="180px" class="demo-ruleForm">
       <div class="upload">
         <el-form   label-width="180px">
           <el-form-item label="Model" required>
             <input type="file"  id="Model"/>
-            <router-link to="/code"><el-button type="primary" size="mini"  value="Model">我要自己写</el-button></router-link>
-            <el-dialog title="Model" :visible.sync="dialogModel">
-              <el-input
-                type="textarea"
-                :autosize="{ minRows: 18, maxRows: 20}"
-                placeholder="请输入内容"
-                v-model="textarea">
-              </el-input>
+            <el-button type="primary"  v-on:click="dialogScript=true" size="mini"  value="Model">我要自己写</el-button>
+            <el-dialog title="Model" :visible.sync="dialogModel" size="large">
+              <codemirror v-model="code"
+                          :options="editorOption"
+                          @cursorActivity="onEditorCursorActivity"
+                          @ready="onEditorReady"
+                          @focus="onEditorFocus"
+                          @blur="onEditorBlur"
+                          style="height: 300px">
+              </codemirror>
               <el-button @click="dialogModel = false" size="small">Cancel</el-button>
               <el-button type="primary" size="small" v-on:click="writeModel" value="Model">Submit</el-button>
             </el-dialog>
@@ -22,15 +25,16 @@
           <el-form-item label="Solver" required>
             <input type="file"  id="Solver"/>
             <el-button type="primary" size="mini" v-on:click="dialogSolver = true" value="Solver">我要自己写</el-button>
-            <el-dialog title="Solver" :visible.sync="dialogSolver">
+            <el-dialog title="Solver" :visible.sync="dialogSolver" size="large">
               <codemirror v-model="code"
                           :options="editorOption"
                           @cursorActivity="onEditorCursorActivity"
                           @ready="onEditorReady"
                           @focus="onEditorFocus"
-                          @blur="onEditorBlur">
+                          @blur="onEditorBlur"
+                          style="height: 300px">
               </codemirror>
-              <el-button @click="dialogSolver = false" size="small">Cancel</el-button>
+              <el-button @click="dialogSolver = false" size="small" style="margin-top: 50px">Cancel</el-button>
               <el-button type="primary" size="small" v-on:click="writeSolver" >Submit</el-button>
             </el-dialog>
           </el-form-item>
@@ -39,13 +43,15 @@
           <el-form-item label="TrainScript" required>
             <input type="file"  id="TrainScript"/>
             <el-button type="primary" size="mini" v-on:click="dialogScript=true" value="TranScript">我要自己写</el-button>
-            <el-dialog title="TrainScript" :visible.sync="dialogScript">
-              <el-input
-                type="textarea"
-                :autosize="{ minRows: 18, maxRows: 20}"
-                placeholder="请输入内容"
-                v-model="textarea2">
-              </el-input>
+            <el-dialog title="TrainScript" :visible.sync="dialogScript" size="large">
+              <codemirror v-model="code"
+                          :options="editorOption"
+                          @cursorActivity="onEditorCursorActivity"
+                          @ready="onEditorReady"
+                          @focus="onEditorFocus"
+                          @blur="onEditorBlur"
+                          style="height: 300px">
+              </codemirror>
               <el-button @click="dialogScript = false" size="small">Cancel</el-button>
               <el-button type="primary" size="small" v-on:click="writeScript">Submit</el-button>
             </el-dialog>
@@ -104,15 +110,15 @@
         </el-form-item>
       </el-form>
       </el-form>
-      <el-button type="primary" @click="submit" style="float: right">Create</el-button>
+      </el-card>
     </div>
 
-      <div style="width: 41vw;margin-left:40vw">
-        <el-card title="PretrainedModelUri" style="height: 28vh;overflow: scroll">
+      <div style="width: 40vw;margin-left:41vw">
+        <el-card title="PretrainedModelUri" style="height: 22vh;overflow: scroll">
           <el-form :model="dynamicValidateForm" ref="dynamicValidateForm"  class="demo-dynamic" >
-            <el-form-item label="PretrainedModelUri" prop="name" required style="margin-top: -20px">
-              <el-input v-model="PretrainedModelUri" style=""></el-input>
-            </el-form-item>
+            <!--<el-form-item label="PretrainedModelUri" prop="name" required style="margin-top: -20px;width: 450px;">-->
+              <!--<el-input v-model="PretrainedModelUri" style="margin-left: 150px;width: 200px"></el-input>-->
+            <!--</el-form-item>-->
             <el-form-item
               v-for="(domain, index) in dynamicValidateForm.domains"
               :label="'PretrainedModelUri' + index"
@@ -130,11 +136,11 @@
           </el-form>
         </el-card>
 
-        <el-card title="TrainDataUri" style="height: 28vh;overflow: scroll">
+        <el-card title="TrainDataUri" style="height: 22vh;overflow: scroll">
           <el-form :model="dynamicValidateForm1" ref="dynamicValidateForm1"  class="demo-dynamic" >
-            <el-form-item label="TrainDataUri" prop="name" required style="margin-top: -15px">
-              <el-input v-model="TrainDataUri" ></el-input>
-            </el-form-item>
+            <!--<el-form-item label="TrainDataUri" prop="name" required style="margin-top: -15px">-->
+              <!--<el-input v-model="TrainDataUri" ></el-input>-->
+            <!--</el-form-item>-->
             <el-form-item
               v-for="(domain, index) in dynamicValidateForm1.domains"
               :label="'TestDataUri' + index"
@@ -152,11 +158,11 @@
           </el-form>
         </el-card>
 
-        <el-card title="TestDataUri" style="height: 28vh;overflow: scroll">
+        <el-card title="TestDataUri" style="height: 22vh;overflow: scroll">
           <el-form :model="dynamicValidateForm2" ref="dynamicValidateForm2"  class="demo-dynamic" >
-            <el-form-item label="TestDataUri" prop="name" required style="margin-top: -20px">
-              <el-input v-model="TestDataUri" ></el-input>
-            </el-form-item>
+            <!--<el-form-item label="TestDataUri" prop="name" required style="margin-top: -20px">-->
+              <!--<el-input v-model="TestDataUri" ></el-input>-->
+            <!--</el-form-item>-->
             <el-form-item
               v-for="(domain, index) in dynamicValidateForm2.domains"
               :label="'TestDataUri' + index"
@@ -174,11 +180,7 @@
           </el-form>
         </el-card>
       </div>
-
-
-
-
-
+    <el-button type="primary" @click="submit" style="float: right;margin:0 15px 20px 0">Create</el-button>
   </div>
 </template>
 
@@ -187,8 +189,11 @@
   import { mapState, mapMutations } from 'vuex'
   import router from 'vue-router'
   import ElForm from "../../node_modules/element-ui/packages/form/src/form";
+  import ElCard from "../../node_modules/element-ui/packages/card/src/main";
   export default {
-    components: {ElForm},
+    components: {
+      ElCard,
+      ElForm},
     data () {
       return {
         activeName: 'first',

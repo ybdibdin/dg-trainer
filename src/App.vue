@@ -3,7 +3,9 @@
     <Top-nav class="nav"></Top-nav>
     <div style="height: 88vh;width:100%;overflow: hidden;">
       <Left-panel class="leftpanel"></Left-panel>
+      <transition name="fade">
       <router-view class="panel"></router-view>
+      </transition>
     </div>
   </div>
 </template>
@@ -52,5 +54,14 @@ export default {
     width: 82vw;
     height: 100%;
     overflow: auto;
+  }
+</style>
+
+<style scoped>
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .5s
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+    opacity: 0
   }
 </style>

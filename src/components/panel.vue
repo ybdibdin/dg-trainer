@@ -1,16 +1,71 @@
 <template>
   <div>
+      <div>
+      <el-table
+        :data="tableData"
+        stripe
+        style="width: 100%">
+
+        <el-table-column
+          fixed
+          prop="hostname"
+          label="hostname"
+          width="180">
+        </el-table-column>
+
+        <el-table-column
+          label="resource">
+          <el-table-column
+            prop="resource.cpus"
+            label="cpus"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="resource.gpus"
+            label="gpus"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="resource.mem"
+            label="mem"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="resource.disk"
+            label="disk"
+          >
+          </el-table-column>
+        </el-table-column>
 
 
-
+        <el-table-column
+          label="used_resource">
+          <el-table-column
+            prop="usedR.cpus"
+            label="cpus"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="usedR.gpus"
+            label="gpus"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="usedR.mem"
+            label="mem"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="usedR.disk"
+            label="disk"
+          >
+          </el-table-column>
+        </el-table-column>
+      </el-table>
+    </div>
       <div v-for="item in this.showid" :key="item" >
         <div v-bind:id="item" style="width: 450px;height:450px;float: left"></div>
       </div>
-
-
-
-
-
   </div>
 </template>
 
@@ -25,75 +80,77 @@
       }
     },
     computed:{
-      sum() {
-          //console.log('data!!!',this.$store.state.data)
-        return this.$store.state.data.sum
-      }
-//        mapState({
-//        tableData:state=>state.data.resourcelist,
+//      sum() {
+//          //console.log('data!!!',this.$store.state.data)
+//        return this.$store.state.data.sum
+//      },
+      ...mapState({
+        sum:state=>state.data.sum,
+        tableData:state=>state.data.resourcelist,
 //        sum:state=>state.data.sum
-//      })
+      })
+    },
+    watch:{
+      sum:()=>{
+          if(this.sum) {
+            this.chart1();
+          }
+      }
+    },
+    methods:{
+      chart1:()=>{
+
+      }
     },
 
     mounted() {
 
-        var myChart = echarts.init(document.getElementById('main'));
-        if (this.sum.length) {
-          //指定图表的配置项和数据
-          var option = {
-            color:['#2f4554','#c23531', '#61a0a8', '#d48265', '#91c7ae','#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'],
-            title: {
-              text: 'resource  cpus',
-              subtext: 'cpus',
-              x: 'center'
-            },
-            tooltip: {
-              trigger: 'item',
-              formatter: "{a} <br/>{b} : {c} ({d}%)"
-            },
-            legend: {
-              x: 'center',
-              y: 'bottom',
-              //data: ['resource cpu', 'offered cpu', 'unreserved cpu', 'used cpu']
-            },
-            toolbox: {
-              show: true,
-              feature: {
-                mark: {show: true},
-                dataView: {show: true, readOnly: false},
-                magicType: {
-                  show: true,
-                  type: ['pie', 'funnel']
-                },
-                restore: {show: true},
-                saveAsImage: {show: true}
-              }
-            },
-            calculable: true,
-            series: [
-              {
 
-                name: '面积模式',
-                type: 'pie',
-                radius: [20, 80],
-                center: ['55%', '50%'],
-                data: [
-                  {value: this.sum[0][2], name: 'unused cpu'},
-                  {value: this.sum[0][3], name: 'used cpu'},
-                ]
-              }
-            ]
-          };
+      var myChart = echarts.init(document.getElementById('main'));
+      if (this.sum.length) {
+        //指定图表的配置项和数据
+        var option = {
+          color:['#2f4554','#c23531', '#61a0a8', '#d48265', '#91c7ae','#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'],
+          title: {
+            text: 'resource  cpus',
+            subtext: 'cpus',
+            x: 'center'
+          },
+          tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+          },
+          legend: {
+            x: 'center',
+            y: 'bottom',
+            //data: ['resource cpu', 'offered cpu', 'unreserved cpu', 'used cpu']
+          },
+          toolbox: {
+            show: true,
+          },
+          calculable: true,
+          series: [
+            {
 
-          // 使用刚指定的配置项和数据显示图表。
-          myChart.setOption(option,true);
+              name: '面积模式',
+              type: 'pie',
+              radius: [20, 80],
+              center: ['55%', '50%'],
+              data: [
+                {value: []||this.sum[0][2], name: 'unused cpu'},
+                {value: []||this.sum[0][3], name: 'used cpu'},
+              ]
+            }
+          ]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option,true);
 
-        }
+      }
 
 
-
-        var myChart2 = echarts.init(document.getElementById('sec'));
-        if (this.sum.length) {
+      var myChart2 = echarts.init(document.getElementById('sec'));
+      if (this.sum.length) {
           //指定图表的配置项和数据
           var option2 = {
             color:['#2f4554','#c23531', '#61a0a8', '#d48265', '#91c7ae','#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'],
@@ -113,16 +170,6 @@
             },
             toolbox: {
               show: true,
-              feature: {
-                mark: {show: true},
-                dataView: {show: true, readOnly: false},
-                magicType: {
-                  show: true,
-                  type: ['pie', 'funnel']
-                },
-                restore: {show: true},
-                saveAsImage: {show: true}
-              }
             },
             calculable: true,
             series: [
@@ -165,16 +212,6 @@
           },
           toolbox: {
             show: true,
-            feature: {
-              mark: {show: true},
-              dataView: {show: true, readOnly: false},
-              magicType: {
-                show: true,
-                type: ['pie', 'funnel']
-              },
-              restore: {show: true},
-              saveAsImage: {show: true}
-            }
           },
           calculable: true,
           series: [
@@ -220,16 +257,6 @@
           },
           toolbox: {
             show: true,
-            feature: {
-              mark: {show: true},
-              dataView: {show: true, readOnly: false},
-              magicType: {
-                show: true,
-                type: ['pie', 'funnel']
-              },
-              restore: {show: true},
-              saveAsImage: {show: true}
-            }
           },
           calculable: true,
           series: [
