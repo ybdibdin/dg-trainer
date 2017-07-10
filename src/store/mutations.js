@@ -1,14 +1,21 @@
 
 const mutations={
 
-  getData:(state,data)=>{
-    state.data=data;
+  getresource:(state,data)=>{
+    state.data.resourcelist=data.resourcelist;
     //console.log("state",state)
 },
+  gettask:(state,data) =>{
+    state.data.tasklist=data.tasklist;
+  },
+  getimage:(state,data)=>{
+    state.data.docker=data.docker;
+    state.data.dockertag=data.dockertag;
+  },
   deleteitem:(state,item)=>{
     state.data.tasklist.splice(item,1)
   },
-  gettasklist:(state,datafile)=>{
+  gettaskdetail:(state,datafile)=>{
     state.file=datafile
   },
   getchartsource:(state,source)=> {

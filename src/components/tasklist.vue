@@ -42,7 +42,7 @@
   export default {
     data () {
       return {
-
+        deter2:false
       }
     },
     methods:{
@@ -60,8 +60,8 @@
       handleDelete:function (index, row) {
           console.log('tab',this.tableData)
         this.$http({
-          url:'http://192.168.6.66:8081/dgtrainer/v1/task/'+this.tableData[index].name,
-          method:'get',
+          url:'http://192.168.6.66:8082/dgtrainer/v1/task/'+this.tableData[index].name,
+          method:'delete',
           headers: {
             'Content-Type': 'application/json'
           }
@@ -75,6 +75,12 @@
             message: '删除任务成功',
             type: 'info'
           });
+        }).catch((res)=>{
+          this.$notify({
+            title: '失败了',
+            message: res,
+            type: 'error'
+          });
         })
 
       },
@@ -87,7 +93,7 @@
           var begin=i/20+1;
         }
 
-        that.$store.dispatch('getTaskList', {
+        that.$store.dispatch('getTaskDetail', {
           that: that,
           id: that.tableData[index].name
         })
@@ -110,6 +116,22 @@
         tableData:state=>state.data.tasklist,
         requestchart:state=>state.data.deter,
       })
+    },
+    created(){
+      var that=this;
+      var getresource=setInterval(function () {
+        if(that.deter2 == true){
+          clearInterval(that.getresource);
+        }else{
+          that.$store.dispatch('getTask', that);
+        }
+      },5000)
+    },
+    beforeRouteLeave (to, from, next) {
+      // 导航离开该组件的对应路由时调用
+      // 可以访问组件实例 `this`
+      this.deter2=true;
+      next();
     }
   }
 

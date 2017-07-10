@@ -26,13 +26,15 @@ new Vue({
   template: '<App/>',
   components: { App },
   beforeCreate() {
-    this.$store.dispatch('getAllData', this)
+    this.$store.dispatch('getResource', this);
+    this.$store.dispatch('getImage',this);
+    this.$store.dispatch('getTask',this);
   },
-  created(){
-    var that=this;
-    setInterval(function () {
-      //console.log('that',that.$store);
-      that.$store.dispatch('getAllData', that)
-    },5000)
-}
+//   created(){
+//     var that=this;
+//     setInterval(function () {
+//       //console.log('that',that.$store);
+//       that.$store.dispatch('getAllData', that)
+//     },5000)
+// }
 })

@@ -1,7 +1,7 @@
 <template>
   <div style="height: 100%;width: 100%;margin: 0 auto">
     <Top-nav class="nav"></Top-nav>
-    <div style="height: 88vh;width:100%;overflow: hidden;">
+    <div style="height: 92vh;width:100%;overflow: hidden;">
       <Left-panel class="leftpanel"></Left-panel>
       <transition name="fade">
       <router-view class="panel"></router-view>
@@ -41,7 +41,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
 }
   .nav{
-    height: 10vh;
+    height: 8vh;
   }
   .leftpanel{
     width: 16vw;

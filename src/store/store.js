@@ -10,9 +10,8 @@ let state={
   data:{
     resourcelist:[],
     tasklist:[],
-    sum:[],
     docker:[],
-    dockertag:[],
+    dockertag:[]
 
   },
   file:{

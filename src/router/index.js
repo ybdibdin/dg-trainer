@@ -16,13 +16,13 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/chart',
+      path: '/',
       name: 'chart',
       component: chart
     },{
-      path:'/',
+      path:'/create',
       name:'create',
-      component:create
+      component:create,
     },{
       path:'/resourcelist',
       name:'resourcelist',
@@ -30,7 +30,7 @@ export default new Router({
     },{
       path:'/tasklist',
       name:'tasklist',
-      component:tasklist
+      component:tasklist,
     },{
       path:'/image',
       name:'image',
@@ -38,7 +38,7 @@ export default new Router({
     },{
       path:'/detail/:index',
       name:'detail',
-      component:detail
+      component:detail,
     },{
       path:'/code',
       name:'code',
