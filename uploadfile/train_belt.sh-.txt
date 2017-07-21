@@ -1,0 +1,6 @@
+$CAFFE_BIN train \
+    --solver=$TRAIN_HOME/proto/solver.prototxt \
+    --weights=$TRAIN_HOME/retune/bvlc_googlenet_driver_belt__iter_200000.caffemodel \
+    --gpu=all &
+
+

@@ -1,0 +1,256 @@
+{
+	"id": "4fdb82b2-c8a0-9dc1-8c7c-81d3a9dfed55",
+	"name": "DgTrainer",
+	"description": "",
+	"order": [
+		"a1507295-2dd9-a963-9faf-f4a8d90affa5",
+		"3f75f252-cf2f-acba-6010-f945c7e5c37a",
+		"d82cd80b-3527-f3b2-8928-a61a4a9113be",
+		"cdadb9a3-56b2-edf7-e79a-25948ade3361",
+		"dd243dfb-9539-db9c-d2af-7c3b9e4fd5c3",
+		"d3ddcf29-ff64-d331-ddb1-42b831e1ea4c",
+		"a3fe6872-202c-0b3c-adb7-88b7a9ea1cfe",
+		"25a836ac-7339-4923-322e-de7779e8153f"
+	],
+	"folders": [],
+	"timestamp": 1492676919212,
+	"owner": 0,
+	"public": false,
+	"requests": [
+		{
+			"id": "25a836ac-7339-4923-322e-de7779e8153f",
+			"headers": "",
+			"url": "http://192.168.6.66:8081/dgtrainer/v1/resources",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "4fdb82b2-c8a0-9dc1-8c7c-81d3a9dfed55",
+			"data": null,
+			"dataMode": "params",
+			"name": "GET resources",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1493778070437,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "3f75f252-cf2f-acba-6010-f945c7e5c37a",
+			"headers": "",
+			"url": "http://192.168.6.66:8081/dgtrainer/v1/tasks",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1493346726773,
+			"name": "GET tasks list",
+			"description": "",
+			"collectionId": "4fdb82b2-c8a0-9dc1-8c7c-81d3a9dfed55",
+			"responses": []
+		},
+		{
+			"id": "a1507295-2dd9-a963-9faf-f4a8d90affa5",
+			"headers": "",
+			"url": "http://192.168.6.66:8081/dgtrainer/v1/task",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "POST",
+			"data": [
+				{
+					"key": "Model",
+					"value": "train_val.prototxt",
+					"type": "file",
+					"enabled": true
+				},
+				{
+					"key": "Solver",
+					"value": "solver.prototxt",
+					"type": "file",
+					"enabled": true
+				},
+				{
+					"key": "TrainScript",
+					"value": "train_belt.sh",
+					"type": "file",
+					"enabled": true
+				},
+				{
+					"key": "DockerImage",
+					"value": "192.168.2.13:5000/caffe:cuda8v5_belt_2",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "TrainDataUri",
+					"value": "nfs:///datacenter/image_data/belt/train_data",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "TestDataUri",
+					"value": "nfs:///datacenter/image_data/belt/val_data",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "Gpus",
+					"value": "1",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "Cpus",
+					"value": "1",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "Mem",
+					"value": "16",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "Disk",
+					"value": "256",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "Instances",
+					"value": "1",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "PretrainedModelUri",
+					"value": "nfs:///datacenter/test_training_platform/belt/bvlc_googlenet_driver_belt__iter_200000.caffemodel",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "PythonLayers",
+					"value": "belt_datalayer.py",
+					"type": "file",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1494832542171,
+			"name": "POST task",
+			"description": "",
+			"collectionId": "4fdb82b2-c8a0-9dc1-8c7c-81d3a9dfed55",
+			"responses": []
+		},
+		{
+			"id": "a3fe6872-202c-0b3c-adb7-88b7a9ea1cfe",
+			"headers": "",
+			"url": "http://192.168.6.66:8081/dgtrainer/v1/image/caffe/tags",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "4fdb82b2-c8a0-9dc1-8c7c-81d3a9dfed55",
+			"data": null,
+			"dataMode": "params",
+			"name": "GET docker image tags",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1493722359769,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "cdadb9a3-56b2-edf7-e79a-25948ade3361",
+			"headers": "",
+			"url": "http://192.168.6.66:8081/dgtrainer/v1/task/8a8dad58-9f76-4200-b50e-4c58d8e6349c/logs",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "4fdb82b2-c8a0-9dc1-8c7c-81d3a9dfed55",
+			"data": null,
+			"dataMode": "params",
+			"name": "GET task logs",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1493346712808,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "d3ddcf29-ff64-d331-ddb1-42b831e1ea4c",
+			"headers": "",
+			"url": "http://192.168.6.66:8081/dgtrainer/v1/images",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "4fdb82b2-c8a0-9dc1-8c7c-81d3a9dfed55",
+			"data": null,
+			"dataMode": "params",
+			"name": "GET docker images",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1493722235596,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "d82cd80b-3527-f3b2-8928-a61a4a9113be",
+			"headers": "",
+			"url": "http://192.168.6.66:8081/dgtrainer/v1/task/bf8f9142-b0b8-4981-b34c-c93fcfca68ce?Status=333&Message=aaaaaaa",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "DELETE",
+			"data": [],
+			"dataMode": "params",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1493346769190,
+			"name": "DELETE task",
+			"description": "",
+			"collectionId": "4fdb82b2-c8a0-9dc1-8c7c-81d3a9dfed55",
+			"responses": []
+		},
+		{
+			"id": "dd243dfb-9539-db9c-d2af-7c3b9e4fd5c3",
+			"headers": "",
+			"url": "http://192.168.6.66:8081/dgtrainer/v1/task/8a8dad58-9f76-4200-b50e-4c58d8e6349c/logs",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "4fdb82b2-c8a0-9dc1-8c7c-81d3a9dfed55",
+			"data": null,
+			"dataMode": "params",
+			"name": "GET task info",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1493346739060,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		}
+	]
+}
